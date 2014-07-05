@@ -30,6 +30,7 @@ void Application::create() {
 }
 
 void Application::destroy() {
+    bridge_->deleteP();
     bridge_->deleteLater();
     delete resource_;
 }
