@@ -22,6 +22,7 @@ public slots:
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
+    void clicked(QString key, QPoint xy);
 
 private:
     struct PageA {

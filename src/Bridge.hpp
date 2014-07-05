@@ -13,6 +13,7 @@ public:
     void loadInP(QUrl url);
     void renderP();
     void setS(QSize size);
+    void click(QPoint xy);
 
 signals:
     void createPage(QString key);
@@ -20,6 +21,7 @@ signals:
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
+    void clicked(QString key, QPoint xy);
 };
 
 #endif

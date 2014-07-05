@@ -1,6 +1,8 @@
 #include "Pages.hpp"
 #include "Page.hpp"
 
+#include <QtGui>
+
 Pages* Pages::globalInstance_ = 0;
 
 Pages::Pages() {
@@ -49,6 +51,15 @@ void Pages::setSize(QString key, QSize size) {
     Page* page = pageOf(key);
     if (page) {
         page->setViewportSize(size);
+    }
+}
+
+void Pages::clicked(QString key, QPoint xy) {
+    Page* page = pageOf(key);
+    if (page) {
+        QMouseEvent e(QEvent::MouseButtonPress, xy,
+                Qt::LeftButton, Qt::LeftButton, 0);
+        QApplication::sendEvent(page, &e);
     }
 }
 

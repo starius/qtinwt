@@ -26,6 +26,7 @@ void App::create() {
     resource_ = new Resource;
     image_ = new Image;
     image_->setImageLink(resource_);
+    image_->clicked().connect(this, &App::clicked);
     WTimer* timer = new WTimer(this);
     timer->timeout().connect(resource_, &WResource::setChanged);
     timer->timeout().connect(boost::bind(&Bridge::renderP,
@@ -59,5 +60,10 @@ void App::navigate() {
     }
     address_->setText(toWString(url));
     bridge_->loadInP(QUrl(url));
+}
+
+void App::clicked(const WMouseEvent& e) {
+    Coordinates xy = e.widget();
+    bridge_->click(QPoint(xy.x, xy.y));
 }
 

@@ -13,6 +13,8 @@ Bridge::Bridge() {
             PAGES, SLOT(renderPage(QString)));
     connect(this, SIGNAL(setSize(QString, QSize)),
             PAGES, SLOT(setSize(QString, QSize)));
+    connect(this, SIGNAL(clicked(QString, QPoint)),
+            PAGES, SLOT(clicked(QString, QPoint)));
 }
 
 void Bridge::createP() {
@@ -33,5 +35,9 @@ void Bridge::renderP() {
 
 void Bridge::setS(QSize size) {
     emit setSize(qsessionId(), size);
+}
+
+void Bridge::click(QPoint xy) {
+    emit clicked(qsessionId(), xy);
 }
 

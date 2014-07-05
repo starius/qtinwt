@@ -31,6 +31,7 @@ private:
     Image* image_;
 
     void navigate();
+    void clicked(const WMouseEvent& e);
 };
 
 #endif
