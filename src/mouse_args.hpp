@@ -1,13 +1,13 @@
 #ifndef QIW_MOUSE_ARGS_HPP_
 #define QIW_MOUSE_ARGS_HPP_
 
-#define MOUSE_ARGS QEvent::Type type, QPoint pos,\
+#define MOUSE_ARGS QPoint pos,\
     Qt::MouseButton button, Qt::KeyboardModifiers modifiers
 
-#define MOUSE_TYPES QEvent::Type, QPoint,\
+#define MOUSE_TYPES QPoint,\
     Qt::MouseButton, Qt::KeyboardModifiers
 
-#define MOUSE_NAMES type, pos, button, modifiers
+#define MOUSE_NAMES pos, button, modifiers
 
 #endif
 

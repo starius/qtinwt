@@ -15,7 +15,8 @@ public:
     void loadInP(QUrl url);
     void renderP();
     void setS(QSize size);
-    void mouse(MOUSE_ARGS);
+    void mouse(QEvent::Type type, MOUSE_ARGS);
+    void wheel(int delta, MOUSE_ARGS);
 
 signals:
     void createPage(QString key);
@@ -24,6 +25,8 @@ signals:
     void renderPage(QString key);
     void setSize(QString key, QSize size);
     void moused(QString key, QEvent::Type, QPoint,
+        Qt::MouseButton, Qt::KeyboardModifiers);
+    void wheeled(QString key, int, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
 };
 

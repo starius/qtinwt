@@ -29,6 +29,7 @@ void App::create() {
     image_->setImageLink(resource_);
     image_->mouseWentDown().connect(this, &App::mouseDown);
     image_->mouseWentUp().connect(this, &App::mouseUp);
+    image_->mouseWheel().connect(this, &App::mouseWheel);
     WTimer* timer = new WTimer(this);
     timer->timeout().connect(resource_, &WResource::setChanged);
     timer->timeout().connect(boost::bind(&Bridge::renderP,
@@ -102,12 +103,16 @@ static Qt::KeyboardModifiers event2mod(const WMouseEvent& e) {
     return result;
 }
 
+static int event2wheel(const WMouseEvent& e) {
+    return e.wheelDelta() * 8 * 15;
+}
+
 void App::mouseDown(const WMouseEvent& e) {
     QEvent::Type type = QEvent::MouseButtonPress;
     QPoint pos = event2pos(e);
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e);
-    bridge_->mouse(MOUSE_NAMES);
+    bridge_->mouse(type, MOUSE_NAMES);
 }
 
 void App::mouseUp(const WMouseEvent& e) {
@@ -115,6 +120,14 @@ void App::mouseUp(const WMouseEvent& e) {
     QPoint pos = event2pos(e);
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e);
-    bridge_->mouse(MOUSE_NAMES);
+    bridge_->mouse(type, MOUSE_NAMES);
+}
+
+void App::mouseWheel(const WMouseEvent& e) {
+    QPoint pos = event2pos(e);
+    int delta = event2wheel(e);
+    Qt::MouseButton button = event2button(e);
+    Qt::KeyboardModifiers modifiers = event2mod(e);
+    bridge_->wheel(delta, MOUSE_NAMES);
 }
 

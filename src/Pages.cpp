@@ -54,10 +54,18 @@ void Pages::setSize(QString key, QSize size) {
     }
 }
 
-void Pages::moused(QString key, MOUSE_ARGS) {
+void Pages::moused(QString key, QEvent::Type type, MOUSE_ARGS) {
     Page* page = pageOf(key);
     if (page) {
         QMouseEvent e(type, pos, button, button, modifiers);
+        QApplication::sendEvent(page, &e);
+    }
+}
+
+void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
+    Page* page = pageOf(key);
+    if (page) {
+        QWheelEvent e(pos, delta, button, modifiers);
         QApplication::sendEvent(page, &e);
     }
 }

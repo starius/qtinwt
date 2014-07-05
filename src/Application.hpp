@@ -33,6 +33,7 @@ private:
     void navigate();
     void mouseDown(const WMouseEvent& e);
     void mouseUp(const WMouseEvent& e);
+    void mouseWheel(const WMouseEvent& e);
 };
 
 #endif
