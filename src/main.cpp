@@ -9,7 +9,7 @@
 using namespace Wt;
 
 WApplication* createApp(const WEnvironment& e) {
-    return new ::Application(e);
+    return new App(e);
 }
 
 int main(int argc, char* argv[]) {

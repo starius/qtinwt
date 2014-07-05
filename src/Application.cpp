@@ -12,11 +12,11 @@
 
 using namespace Wt;
 
-Application::Application(const WEnvironment& env):
+App::App(const WEnvironment& env):
     WQApplication(env, /* loop */ true) {
 }
 
-void Application::create() {
+void App::create() {
     bridge_ = new Bridge;
     bridge_->createP();
     bridge_->loadInP(QUrl("http://mail.ru/"));
@@ -34,17 +34,17 @@ void Application::create() {
     layout->addWidget(image_, 1);
 }
 
-void Application::destroy() {
+void App::destroy() {
     bridge_->deleteP();
     bridge_->deleteLater();
     delete resource_;
 }
 
-::Application* Application::instance() {
-    return D_CAST<Application*>(wApp);
+App* App::instance() {
+    return D_CAST<App*>(wApp);
 }
 
-Bridge* Application::bridge() const {
+Bridge* App::bridge() const {
     return bridge_;
 }
 

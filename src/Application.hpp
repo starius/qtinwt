@@ -9,16 +9,16 @@ class Resource;
 class Bridge;
 class Image;
 
-#define qiwApp Application::instance()
+#define qiwApp App::instance()
 
-class Application : public WQApplication {
+class App : public WQApplication {
 public:
-    Application(const WEnvironment& env);
+    App(const WEnvironment& env);
 
     void create();
     void destroy();
 
-    static Application* instance();
+    static App* instance();
 
     Bridge* bridge() const;
 
