@@ -1,6 +1,8 @@
 #ifndef QIW_APPLICATION_HPP_
 #define QIW_APPLICATION_HPP_
 
+#include <Wt/WGlobal>
+
 #include "WQApplication"
 
 using namespace Wt;
@@ -25,7 +27,10 @@ public:
 private:
     Resource* resource_;
     Bridge* bridge_;
+    WLineEdit* address_;
     Image* image_;
+
+    void navigate();
 };
 
 #endif

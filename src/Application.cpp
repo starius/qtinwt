@@ -2,6 +2,7 @@
 #include <Wt/WTimer>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
+#include <Wt/WLineEdit>
 
 #include "Application.hpp"
 #include "Resource.hpp"
@@ -17,6 +18,8 @@ App::App(const WEnvironment& env):
 }
 
 void App::create() {
+    address_= new WLineEdit;
+    address_->enterPressed().connect(this, &App::navigate);
     bridge_ = new Bridge;
     bridge_->createP();
     bridge_->loadInP(QUrl("http://mail.ru/"));
@@ -31,6 +34,7 @@ void App::create() {
     timer->start();
     WVBoxLayout* layout = new WVBoxLayout;
     root()->setLayout(layout);
+    layout->addWidget(address_);
     layout->addWidget(image_, 1);
 }
 
@@ -46,5 +50,9 @@ App* App::instance() {
 
 Bridge* App::bridge() const {
     return bridge_;
+}
+
+void App::navigate() {
+    bridge_->loadInP(QUrl(toQString(address_->text())));
 }
 
