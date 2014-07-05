@@ -15,6 +15,7 @@ set(QT_DONT_USE_QTGUI TRUE)
 INCLUDE(${QT_USE_FILE})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/wtwithqt/lib/)
 
 file(GLOB headers "*.hpp" "wtwithqt/lib/*.h")
 file(GLOB sources "*.cpp" "wtwithqt/lib/*.C")
