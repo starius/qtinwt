@@ -65,7 +65,14 @@ void Pages::moused(QString key, QEvent::Type type, MOUSE_ARGS) {
 void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
     Page* page = pageOf(key);
     if (page) {
-        QWheelEvent e(pos, delta, button, modifiers);
+        Qt::Orientation o = Qt::Vertical;
+        QWebFrame* f = page->mainFrame();
+        QRect r = f->scrollBarGeometry(Qt::Horizontal);
+        int height = page->viewportSize().height();
+        if (!r.isEmpty() && pos.y() > height - r.height()) {
+            o = Qt::Horizontal;
+        }
+        QWheelEvent e(pos, delta, button, modifiers, o);
         QApplication::sendEvent(page, &e);
     }
 }
