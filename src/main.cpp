@@ -1,3 +1,6 @@
+#include "boost-xtime.hpp"
+#include <boost/thread.hpp>
+
 #include "Application.hpp"
 #include "Pages.hpp"
 
@@ -12,5 +15,7 @@ WApplication* createApp(const WEnvironment& e) {
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
     Pages pages;
-    return WRun(argc, argv, &createApp);
+    boost::thread wt_thread(&WRun, argc, argv, &createApp);
+    return a.exec();
 }
+
