@@ -1,7 +1,9 @@
 find_package(Threads REQUIRED)
 
 include(FindBoost)
-FIND_PACKAGE(Boost 1.42 REQUIRED)
+FIND_PACKAGE(Boost 1.42
+    COMPONENTS thread program_options filesystem system date_time
+    REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR})
@@ -20,6 +22,7 @@ QT4_WRAP_CPP(MOCSrcs ${headers})
 
 ADD_EXECUTABLE(qtinwt ${sources} ${MOCSrcs})
 TARGET_LINK_LIBRARIES(qtinwt
+    ${Boost_LIBRARIES}
     ${QT_LIBRARIES}
     ${Wt_LIBRARY} ${Wt_HTTP_LIBRARY})
 
