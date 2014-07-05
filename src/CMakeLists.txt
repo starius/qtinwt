@@ -2,7 +2,8 @@ find_package(Threads REQUIRED)
 
 include(FindBoost)
 FIND_PACKAGE(Boost 1.42
-    COMPONENTS thread program_options filesystem system date_time
+    COMPONENTS thread program_options filesystem system
+        date_time signals
     REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
