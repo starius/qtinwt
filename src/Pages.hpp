@@ -21,6 +21,7 @@ public slots:
     void deletePage(QString key);
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
+    void setSize(QString key, QSize size);
 
 private:
     struct PageA {

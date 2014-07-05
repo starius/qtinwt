@@ -45,6 +45,13 @@ void Pages::renderPage(QString key) {
     }
 }
 
+void Pages::setSize(QString key, QSize size) {
+    Page* page = pageOf(key);
+    if (page) {
+        page->setViewportSize(size);
+    }
+}
+
 Page* Pages::pageOf(QString key) const {
     CIt it = pages_.find(key);
     if (it != pages_.end()) {

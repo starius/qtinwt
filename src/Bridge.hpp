@@ -12,12 +12,14 @@ public:
     void deleteP();
     void loadInP(QUrl url);
     void renderP();
+    void setS(QSize size);
 
 signals:
     void createPage(QString key);
     void deletePage(QString key);
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
+    void setSize(QString key, QSize size);
 };
 
 #endif

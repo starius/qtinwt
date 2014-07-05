@@ -11,6 +11,8 @@ Bridge::Bridge() {
             PAGES, SLOT(loadInPage(QString, QUrl)));
     connect(this, SIGNAL(renderPage(QString)),
             PAGES, SLOT(renderPage(QString)));
+    connect(this, SIGNAL(setSize(QString, QSize)),
+            PAGES, SLOT(setSize(QString, QSize)));
 }
 
 void Bridge::createP() {
@@ -27,5 +29,9 @@ void Bridge::loadInP(QUrl url) {
 
 void Bridge::renderP() {
     emit renderPage(qsessionId());
+}
+
+void Bridge::setS(QSize size) {
+    emit setSize(qsessionId(), size);
 }
 
