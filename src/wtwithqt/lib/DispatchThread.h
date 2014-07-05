@@ -26,6 +26,7 @@
 #ifndef DISPATCH_THREAD_H_
 #define DISPATCH_THREAD_H_
 
+#include "boost-xtime.hpp"
 #include <QThread>
 #include <boost/thread.hpp>
 #include <boost/thread/condition.hpp>
