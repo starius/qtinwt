@@ -21,9 +21,11 @@ void Pages::createPage(QString key) {
     PageA pa;
     pa.page_ = new Page;
     pages_.insert(key, pa);
-    connect(pa.page_->mainFrame(),
-            SIGNAL(titleChanged(QString)),
+    QWebFrame* frame = pa.page_->mainFrame();
+    connect(frame, SIGNAL(titleChanged(QString)),
             sender(), SLOT(titleChanged(QString)));
+    connect(frame, SIGNAL(urlChanged(QUrl)),
+            sender(), SLOT(urlChanged(QUrl)));
 }
 
 void Pages::deletePage(QString key) {

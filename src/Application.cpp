@@ -60,6 +60,10 @@ void App::titleChanged(WString title) {
     wApp->setTitle(title);
 }
 
+void App::urlChanged(WString url) {
+    qiwApp->address_->setText(url);
+}
+
 void App::navigate() {
     QString url = toQString(address_->text());
     if (!url.contains("://")) {

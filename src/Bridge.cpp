@@ -65,3 +65,8 @@ void Bridge::titleChanged(QString title) {
     post(boost::bind(&App::titleChanged, wtitle));
 }
 
+void Bridge::urlChanged(QUrl url) {
+    WString wurl = toWString(url.toString());
+    post(boost::bind(&App::urlChanged, wurl));
+}
+

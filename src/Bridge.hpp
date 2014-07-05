@@ -36,6 +36,7 @@ signals:
 
 public slots:
     void titleChanged(QString title);
+    void urlChanged(QUrl url);
 
 private:
     std::string sessionId_;
