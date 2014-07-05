@@ -1,3 +1,6 @@
+#ifndef QIW_RESOURCE_HPP_
+#define QIW_RESOURCE_HPP_
+
 #include <Wt/WResource>
 
 using namespace Wt;
@@ -16,4 +19,6 @@ public:
 private:
     Page* page_;
 };
+
+#endif
 

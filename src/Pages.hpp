@@ -1,3 +1,5 @@
+#ifndef QIW_PAGES_HPP_
+#define QIW_PAGES_HPP_
 
 #include <QtCore>
 
@@ -34,4 +36,6 @@ private:
 
     static Pages* globalInstance_;
 };
+
+#endif
 

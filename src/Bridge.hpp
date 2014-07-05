@@ -1,3 +1,6 @@
+#ifndef QIW_BRIDGE_HPP_
+#define QIW_BRIDGE_HPP_
+
 #include <QtCore>
 
 class Bridge : public QObject {
@@ -16,4 +19,6 @@ signals:
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
 };
+
+#endif
 

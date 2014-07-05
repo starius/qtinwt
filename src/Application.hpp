@@ -1,3 +1,6 @@
+#ifndef QIW_APPLICATION_HPP_
+#define QIW_APPLICATION_HPP_
+
 #include "WQApplication"
 
 using namespace Wt;
@@ -16,4 +19,6 @@ private:
     Resource* resource_;
     Bridge* bridge_;
 };
+
+#endif
 
