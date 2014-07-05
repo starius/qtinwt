@@ -53,6 +53,11 @@ Bridge* App::bridge() const {
 }
 
 void App::navigate() {
-    bridge_->loadInP(QUrl(toQString(address_->text())));
+    QString url = toQString(address_->text());
+    if (!url.contains("://")) {
+        url = "http://" + url;
+    }
+    address_->setText(toWString(url));
+    bridge_->loadInP(QUrl(url));
 }
 
