@@ -40,15 +40,8 @@ void Pages::renderPage(QString key) {
     It it = pages_.find(key);
     if (it != pages_.end()) {
         Page* page = it->page_;
-        QSize size(640, 480);
-        page->setViewportSize(size);
-        QImage image(size, QImage::Format_ARGB32);
-        QPainter painter(&image);
-        page->mainFrame()->render(&painter);
         QByteArray& ba = it->image_;
-        QBuffer buffer(&ba);
-        buffer.open(QIODevice::WriteOnly);
-        image.save(&buffer, "PNG");
+        page->renderPng(ba);
     }
 }
 
