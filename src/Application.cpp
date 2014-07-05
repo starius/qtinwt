@@ -3,6 +3,7 @@
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
 #include <Wt/WLineEdit>
+#include <QtGui>
 
 #include "Application.hpp"
 #include "Resource.hpp"
@@ -26,7 +27,8 @@ void App::create() {
     resource_ = new Resource;
     image_ = new Image;
     image_->setImageLink(resource_);
-    image_->clicked().connect(this, &App::clicked);
+    image_->mouseWentDown().connect(this, &App::mouseDown);
+    image_->mouseWentUp().connect(this, &App::mouseUp);
     WTimer* timer = new WTimer(this);
     timer->timeout().connect(resource_, &WResource::setChanged);
     timer->timeout().connect(boost::bind(&Bridge::renderP,
@@ -62,8 +64,57 @@ void App::navigate() {
     bridge_->loadInP(QUrl(url));
 }
 
-void App::clicked(const WMouseEvent& e) {
-    Coordinates xy = e.widget();
-    bridge_->click(QPoint(xy.x, xy.y));
+static QPoint cor2pos(const Coordinates& cor) {
+    return QPoint(cor.x, cor.y);
+}
+
+static QPoint event2pos(const WMouseEvent& event) {
+    return cor2pos(event.widget());
+}
+
+static Qt::MouseButton event2button(const WMouseEvent& event) {
+    WMouseEvent::Button button = event.button();
+    if (button == WMouseEvent::LeftButton) {
+        return Qt::LeftButton;
+    } else if (button == WMouseEvent::RightButton) {
+        return Qt::RightButton;
+    } else if (button == WMouseEvent::MiddleButton) {
+        return Qt::MiddleButton;
+    }
+    return Qt::NoButton;
+}
+
+static Qt::KeyboardModifiers event2mod(const WMouseEvent& e) {
+    WFlags<KeyboardModifier> md = e.modifiers();
+    Qt::KeyboardModifiers result = Qt::NoModifier;
+    if (md.testFlag(Wt::ShiftModifier)) {
+        result |= Qt::ShiftModifier;
+    }
+    if (md.testFlag(Wt::ControlModifier)) {
+        result |= Qt::ControlModifier;
+    }
+    if (md.testFlag(Wt::AltModifier)) {
+        result |= Qt::AltModifier;
+    }
+    if (md.testFlag(Wt::MetaModifier)) {
+        result |= Qt::MetaModifier;
+    }
+    return result;
+}
+
+void App::mouseDown(const WMouseEvent& e) {
+    QEvent::Type type = QEvent::MouseButtonPress;
+    QPoint pos = event2pos(e);
+    Qt::MouseButton button = event2button(e);
+    Qt::KeyboardModifiers modifiers = event2mod(e);
+    bridge_->mouse(MOUSE_NAMES);
+}
+
+void App::mouseUp(const WMouseEvent& e) {
+    QEvent::Type type = QEvent::MouseButtonRelease;
+    QPoint pos = event2pos(e);
+    Qt::MouseButton button = event2button(e);
+    Qt::KeyboardModifiers modifiers = event2mod(e);
+    bridge_->mouse(MOUSE_NAMES);
 }
 

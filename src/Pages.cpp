@@ -54,11 +54,10 @@ void Pages::setSize(QString key, QSize size) {
     }
 }
 
-void Pages::clicked(QString key, QPoint xy) {
+void Pages::moused(QString key, MOUSE_ARGS) {
     Page* page = pageOf(key);
     if (page) {
-        QMouseEvent e(QEvent::MouseButtonPress, xy,
-                Qt::LeftButton, Qt::LeftButton, 0);
+        QMouseEvent e(type, pos, button, button, modifiers);
         QApplication::sendEvent(page, &e);
     }
 }

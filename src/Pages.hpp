@@ -1,7 +1,9 @@
 #ifndef QIW_PAGES_HPP_
 #define QIW_PAGES_HPP_
 
-#include <QtCore>
+#include <QtGui>
+
+#include "mouse_args.hpp"
 
 class Page;
 
@@ -22,7 +24,8 @@ public slots:
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
-    void clicked(QString key, QPoint xy);
+    void moused(QString key, QEvent::Type, QPoint,
+        Qt::MouseButton, Qt::KeyboardModifiers);
 
 private:
     struct PageA {

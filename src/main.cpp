@@ -14,6 +14,10 @@ WApplication* createApp(const WEnvironment& e) {
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
+    qRegisterMetaType<QEvent::Type>("QEvent::Type");
+    qRegisterMetaType<Qt::MouseButton>("Qt::MouseButton");
+    qRegisterMetaType<Qt::KeyboardModifiers>("Qt::"
+            "KeyboardModifiers");
     Pages pages;
     boost::thread wt_thread(&WRun, argc, argv, &createApp);
     return a.exec();

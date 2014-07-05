@@ -1,7 +1,9 @@
 #ifndef QIW_BRIDGE_HPP_
 #define QIW_BRIDGE_HPP_
 
-#include <QtCore>
+#include <QtGui>
+
+#include "mouse_args.hpp"
 
 class Bridge : public QObject {
     Q_OBJECT;
@@ -13,7 +15,7 @@ public:
     void loadInP(QUrl url);
     void renderP();
     void setS(QSize size);
-    void click(QPoint xy);
+    void mouse(MOUSE_ARGS);
 
 signals:
     void createPage(QString key);
@@ -21,7 +23,8 @@ signals:
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
-    void clicked(QString key, QPoint xy);
+    void moused(QString key, QEvent::Type, QPoint,
+        Qt::MouseButton, Qt::KeyboardModifiers);
 };
 
 #endif

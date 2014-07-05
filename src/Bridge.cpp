@@ -13,8 +13,10 @@ Bridge::Bridge() {
             PAGES, SLOT(renderPage(QString)));
     connect(this, SIGNAL(setSize(QString, QSize)),
             PAGES, SLOT(setSize(QString, QSize)));
-    connect(this, SIGNAL(clicked(QString, QPoint)),
-            PAGES, SLOT(clicked(QString, QPoint)));
+    connect(this, SIGNAL(moused(QString, QEvent::Type, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)),
+            PAGES, SLOT(moused(QString, QEvent::Type, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)));
 }
 
 void Bridge::createP() {
@@ -37,7 +39,7 @@ void Bridge::setS(QSize size) {
     emit setSize(qsessionId(), size);
 }
 
-void Bridge::click(QPoint xy) {
-    emit clicked(qsessionId(), xy);
+void Bridge::mouse(MOUSE_ARGS) {
+    emit moused(qsessionId(), MOUSE_NAMES);
 }
 
