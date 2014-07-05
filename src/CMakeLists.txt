@@ -20,6 +20,8 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/wtwithqt/lib/)
 file(GLOB headers "*.hpp" "wtwithqt/lib/*.h")
 file(GLOB sources "*.cpp" "wtwithqt/lib/*.C")
 
+ADD_DEFINITIONS(-DWT_NO_SLOT_MACROS)
+
 QT4_WRAP_CPP(MOCSrcs ${headers}
     OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
