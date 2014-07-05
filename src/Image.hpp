@@ -7,6 +7,8 @@ using namespace Wt;
 
 class Image : public WImage {
 public:
+    Image();
+
     void layoutSizeChanged(int widht, int height);
 };
 
