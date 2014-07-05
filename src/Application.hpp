@@ -2,8 +2,8 @@
 
 using namespace Wt;
 
-class Page;
 class Resource;
+class Bridge;
 
 class Application : public WQApplication {
 public:
@@ -13,7 +13,7 @@ public:
     void destroy();
 
 private:
-    Page* page_;
     Resource* resource_;
+    Bridge* bridge_;
 };
 

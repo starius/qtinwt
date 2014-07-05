@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "Pages.hpp"
 
 #include <QtGui>
 
@@ -10,5 +11,6 @@ WApplication* createApp(const WEnvironment& e) {
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
+    Pages pages;
     return WRun(argc, argv, &createApp);
 }

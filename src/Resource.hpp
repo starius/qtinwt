@@ -6,7 +6,7 @@ class Page;
 
 class Resource : public WResource {
 public:
-    Resource(Page* page);
+    Resource();
 
     ~Resource();
 
