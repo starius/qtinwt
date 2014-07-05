@@ -16,6 +16,7 @@ using namespace Wt;
 
 App::App(const WEnvironment& env):
     WQApplication(env, /* loop */ true) {
+    enableUpdates(true);
 }
 
 void App::create() {
@@ -54,6 +55,11 @@ App* App::instance() {
 
 Bridge* App::bridge() const {
     return bridge_;
+}
+
+void App::titleChanged(WString title) {
+    wApp->setTitle(title);
+    wApp->triggerUpdate();
 }
 
 void App::navigate() {

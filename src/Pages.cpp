@@ -21,6 +21,9 @@ void Pages::createPage(QString key) {
     PageA pa;
     pa.page_ = new Page;
     pages_.insert(key, pa);
+    connect(pa.page_->mainFrame(),
+            SIGNAL(titleChanged(QString)),
+            sender(), SLOT(titleChanged(QString)));
 }
 
 void Pages::deletePage(QString key) {

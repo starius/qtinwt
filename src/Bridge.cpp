@@ -1,8 +1,13 @@
+#include <boost/bind.hpp>
+#include <Wt/WServer>
+
 #include "Bridge.hpp"
 #include "Pages.hpp"
+#include "Application.hpp"
 #include "util.hpp"
 
 Bridge::Bridge() {
+    sessionId_ = wApp->sessionId();
     connect(this, SIGNAL(createPage(QString)),
             PAGES, SLOT(createPage(QString)));
     connect(this, SIGNAL(deletePage(QString)),
@@ -49,5 +54,14 @@ void Bridge::mouse(QEvent::Type type, MOUSE_ARGS) {
 
 void Bridge::wheel(int delta, MOUSE_ARGS) {
     emit wheeled(qsessionId(), delta, MOUSE_NAMES);
+}
+
+void Bridge::post(const F& f) {
+    WServer::instance()->post(sessionId_, f);
+}
+
+void Bridge::titleChanged(QString title) {
+    WString wtitle = toWString(title);
+    post(boost::bind(&App::titleChanged, wtitle));
 }
 

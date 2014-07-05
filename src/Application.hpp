@@ -24,6 +24,8 @@ public:
 
     Bridge* bridge() const;
 
+    static void titleChanged(WString title);
+
 private:
     Resource* resource_;
     Bridge* bridge_;
