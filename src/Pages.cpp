@@ -1,3 +1,5 @@
+#include <cctype>
+
 #include "Pages.hpp"
 #include "Page.hpp"
 
@@ -86,7 +88,12 @@ void Pages::keyed(QString key, int k, QEvent::Type type,
         Qt::KeyboardModifiers modifiers) {
     Page* page = pageOf(key);
     if (page) {
-        QKeyEvent e(type, k, modifiers);
+        QString text;
+        if (isalpha(k)) {
+            bool shift = modifiers.testFlag(Qt::ShiftModifier);
+            text = QChar(shift ? k : tolower(k));
+        }
+        QKeyEvent e(type, k, modifiers, text);
         QApplication::sendEvent(page, &e);
     }
 }
