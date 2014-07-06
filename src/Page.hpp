@@ -12,6 +12,9 @@ public:
 
 signals:
     void pngRendered(QByteArray ba);
+
+public slots:
+    void loadInMainFrame(QUrl url);
 };
 
 #endif

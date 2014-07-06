@@ -2,6 +2,9 @@
 
 Page::Page() {
     setViewportSize(QSize(640, 480));
+    setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    connect(this, SIGNAL(linkClicked(QUrl)),
+            this, SLOT(loadInMainFrame(QUrl)));
 }
 
 void Page::renderPng() {
@@ -15,3 +18,6 @@ void Page::renderPng() {
     emit pngRendered(ba);
 }
 
+void Page::loadInMainFrame(QUrl url) {
+    mainFrame()->load(url);
+}
