@@ -26,6 +26,8 @@ public:
     void post(const F& f);
 
     QByteArray image() const;
+    bool imageChanged() const;
+    void setImageChanged();
 
 signals:
     void createPage(QString key);
@@ -48,6 +50,7 @@ public slots:
 private:
     std::string sessionId_;
     QByteArray image_;
+    bool imageChanged_;
 };
 
 #endif

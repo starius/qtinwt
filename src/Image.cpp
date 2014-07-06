@@ -8,5 +8,6 @@ Image::Image() {
 
 void Image::layoutSizeChanged(int width, int height) {
     qiwApp->bridge()->setS(QSize(width, height));
+    qiwApp->requestRendering();
 }
 

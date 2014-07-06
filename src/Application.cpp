@@ -25,6 +25,7 @@ void App::create() {
     bridge_ = new Bridge;
     bridge_->createP();
     bridge_->loadInP(QUrl("http://mail.ru/"));
+    requestRendering();
     resource_ = new Resource;
     image_ = new Image;
     image_->setImageLink(resource_);
@@ -34,12 +35,6 @@ void App::create() {
     input_->keyPressed().connect(this, &App::keyPressed);
     globalKeyWentDown().connect(this, &App::keyDown);
     globalKeyWentUp().connect(this, &App::keyUp);
-    WTimer* timer = new WTimer(this);
-    timer->timeout().connect(resource_, &WResource::setChanged);
-    timer->timeout().connect(boost::bind(&Bridge::renderP,
-                bridge_));
-    timer->setInterval(1000);
-    timer->start();
     WVBoxLayout* layout = new WVBoxLayout;
     root()->setLayout(layout);
     layout->addWidget(address_);
@@ -67,6 +62,21 @@ void App::titleChanged(WString title) {
 
 void App::urlChanged(WString url) {
     qiwApp->address_->setText(url);
+}
+
+const int REFRESH_MSEC = 1000;
+
+void App::requestRendering() {
+    bridge_->renderP();
+    bridge_->setImageChanged();
+    WTimer::singleShot(REFRESH_MSEC, this, &App::onTimeout);
+}
+
+void App::onTimeout() {
+    if (bridge()->imageChanged()) {
+        resource_->setChanged();
+        requestRendering();
+    }
 }
 
 void App::navigate() {
@@ -127,6 +137,7 @@ void App::mouseDown(const WMouseEvent& e) {
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
     bridge_->mouse(type, MOUSE_NAMES);
+    requestRendering();
 }
 
 void App::mouseUp(const WMouseEvent& e) {
@@ -143,6 +154,7 @@ void App::mouseWheel(const WMouseEvent& e) {
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
     bridge_->wheel(delta, MOUSE_NAMES);
+    requestRendering();
 }
 
 typedef QHash<Wt::Key, Qt::Key> Key2Key;
@@ -201,6 +213,7 @@ void App::keyDown(const WKeyEvent& e) {
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
     bridge_->keye(k, type, modifiers, "");
+    requestRendering();
 }
 
 void App::keyUp(const WKeyEvent& e) {
@@ -216,5 +229,6 @@ void App::keyPressed(const WKeyEvent& e) {
     QString text = toQString(e.text());
     bridge_->keye(k, QEvent::KeyPress, modifiers, text);
     bridge_->keye(k, QEvent::KeyRelease, modifiers, text);
+    requestRendering();
 }
 

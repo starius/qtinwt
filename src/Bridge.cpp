@@ -8,6 +8,7 @@
 
 Bridge::Bridge() {
     sessionId_ = wApp->sessionId();
+    imageChanged_ = true;
     connect(this, SIGNAL(createPage(QString)),
             PAGES, SLOT(createPage(QString)));
     connect(this, SIGNAL(deletePage(QString)),
@@ -73,6 +74,14 @@ QByteArray Bridge::image() const {
     return image_;
 }
 
+bool Bridge::imageChanged() const {
+    return imageChanged_;
+}
+
+void Bridge::setImageChanged() {
+    imageChanged_ = true;
+}
+
 void Bridge::titleChanged(QString title) {
     WString wtitle = toWString(title);
     post(boost::bind(&App::titleChanged, wtitle));
@@ -84,6 +93,9 @@ void Bridge::urlChanged(QUrl url) {
 }
 
 void Bridge::pngRendered(QByteArray image) {
+    if (image == image_) {
+        imageChanged_ = false;
+    }
     image_ = image;
 }
 

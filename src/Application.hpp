@@ -27,6 +27,8 @@ public:
     static void titleChanged(WString title);
     static void urlChanged(WString url);
 
+    void requestRendering();
+
 private:
     Resource* resource_;
     Bridge* bridge_;
@@ -41,6 +43,7 @@ private:
     void keyDown(const WKeyEvent& e);
     void keyUp(const WKeyEvent& e);
     void keyPressed(const WKeyEvent& e);
+    void onTimeout();
 };
 
 #endif
