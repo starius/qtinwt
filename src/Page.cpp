@@ -1,6 +1,7 @@
 #include "Page.hpp"
 
 Page::Page() {
+    setViewportSize(QSize(640, 480));
 }
 
 void Page::renderPng() {
