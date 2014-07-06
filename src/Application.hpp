@@ -37,6 +37,8 @@ private:
     void mouseDown(const WMouseEvent& e);
     void mouseUp(const WMouseEvent& e);
     void mouseWheel(const WMouseEvent& e);
+    void keyDown(const WKeyEvent& e);
+    void keyUp(const WKeyEvent& e);
 };
 
 #endif

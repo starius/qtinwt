@@ -18,6 +18,8 @@ public:
     void setS(QSize size);
     void mouse(QEvent::Type type, MOUSE_ARGS);
     void wheel(int delta, MOUSE_ARGS);
+    void keye(int k, QEvent::Type type,
+            Qt::KeyboardModifiers modifiers);
 
     typedef boost::function<void()> F;
 
@@ -33,6 +35,8 @@ signals:
         Qt::MouseButton, Qt::KeyboardModifiers);
     void wheeled(QString key, int, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
+    void keyed(QString key, int k, QEvent::Type type,
+            Qt::KeyboardModifiers modifiers);
 
 public slots:
     void titleChanged(QString title);

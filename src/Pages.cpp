@@ -82,6 +82,15 @@ void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
     }
 }
 
+void Pages::keyed(QString key, int k, QEvent::Type type,
+        Qt::KeyboardModifiers modifiers) {
+    Page* page = pageOf(key);
+    if (page) {
+        QKeyEvent e(type, k, modifiers);
+        QApplication::sendEvent(page, &e);
+    }
+}
+
 Page* Pages::pageOf(QString key) const {
     CIt it = pages_.find(key);
     if (it != pages_.end()) {

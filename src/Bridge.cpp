@@ -26,6 +26,10 @@ Bridge::Bridge() {
                 Qt::MouseButton, Qt::KeyboardModifiers)),
             PAGES, SLOT(wheeled(QString, int, QPoint,
                 Qt::MouseButton, Qt::KeyboardModifiers)));
+    connect(this, SIGNAL(keyed(QString, int, QEvent::Type,
+                Qt::KeyboardModifiers)),
+            PAGES, SLOT(keyed(QString, int, QEvent::Type,
+                Qt::KeyboardModifiers)));
 }
 
 void Bridge::createP() {
@@ -54,6 +58,11 @@ void Bridge::mouse(QEvent::Type type, MOUSE_ARGS) {
 
 void Bridge::wheel(int delta, MOUSE_ARGS) {
     emit wheeled(qsessionId(), delta, MOUSE_NAMES);
+}
+
+void Bridge::keye(int k, QEvent::Type type,
+        Qt::KeyboardModifiers modifiers) {
+    emit keyed(qsessionId(), k, type, modifiers);
 }
 
 void Bridge::post(const F& f) {
