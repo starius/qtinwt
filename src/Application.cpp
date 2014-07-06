@@ -14,6 +14,8 @@
 
 using namespace Wt;
 
+const int REFRESH_MSEC = 1000;
+
 App::App(const WEnvironment& env):
     WQApplication(env, /* loop */ true) {
 }
@@ -25,7 +27,6 @@ void App::create() {
     bridge_ = new Bridge;
     bridge_->createP();
     bridge_->loadInP(QUrl("http://mail.ru/"));
-    requestRendering();
     resource_ = new Resource;
     image_ = new Image;
     image_->setImageLink(resource_);
@@ -41,6 +42,8 @@ void App::create() {
     layout->addWidget(address_);
     layout->addWidget(image_, 1);
     layout->addWidget(input_);
+    timeout_ = REFRESH_MSEC;
+    onTimeout();
 }
 
 void App::destroy() {
@@ -65,19 +68,24 @@ void App::urlChanged(WString url) {
     qiwApp->address_->setText(url);
 }
 
-const int REFRESH_MSEC = 1000;
+void App::imageChanged() {
+    qiwApp->timeout_ = REFRESH_MSEC;
+    qiwApp->resource_->setChanged();
+}
 
 void App::requestRendering() {
+    timeout_ = REFRESH_MSEC;
+    requestRenderingImpl();
+}
+
+void App::requestRenderingImpl() {
     bridge_->renderP();
-    bridge_->setImageChanged();
-    WTimer::singleShot(REFRESH_MSEC, this, &App::onTimeout);
 }
 
 void App::onTimeout() {
-    if (bridge()->imageChanged()) {
-        resource_->setChanged();
-        requestRendering();
-    }
+    WTimer::singleShot(timeout_, this, &App::onTimeout);
+    timeout_ *= 2;
+    requestRenderingImpl();
 }
 
 void App::navigate() {

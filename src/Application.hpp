@@ -26,6 +26,7 @@ public:
 
     static void titleChanged(WString title);
     static void urlChanged(WString url);
+    static void imageChanged();
 
     void requestRendering();
 
@@ -35,6 +36,7 @@ private:
     WLineEdit* address_;
     WLineEdit* input_;
     Image* image_;
+    int timeout_;
 
     void navigate();
     void mouseDown(const WMouseEvent& e);
@@ -43,6 +45,7 @@ private:
     void keyDown(const WKeyEvent& e);
     void keyUp(const WKeyEvent& e);
     void keyPressed(const WKeyEvent& e);
+    void requestRenderingImpl();
     void onTimeout();
 };
 
