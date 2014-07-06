@@ -25,6 +25,8 @@ public:
 
     void post(const F& f);
 
+    QByteArray image() const;
+
 signals:
     void createPage(QString key);
     void deletePage(QString key);
@@ -41,9 +43,11 @@ signals:
 public slots:
     void titleChanged(QString title);
     void urlChanged(QUrl url);
+    void pngRendered(QByteArray image);
 
 private:
     std::string sessionId_;
+    QByteArray image_;
 };
 
 #endif

@@ -8,7 +8,10 @@ class Page : public QWebPage {
 public:
     Page();
 
-    void renderPng(QByteArray& ba) const;
+    void renderPng();
+
+signals:
+    void pngRendered(QByteArray ba);
 };
 
 #endif

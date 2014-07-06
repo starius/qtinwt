@@ -15,25 +15,23 @@ Pages* Pages::globalInstance() {
     return globalInstance_;
 }
 
-QByteArray Pages::imageOfPage(QString key) const {
-    return pages_[key].image_;
-}
-
 void Pages::createPage(QString key) {
-    PageA pa;
-    pa.page_ = new Page;
-    pages_.insert(key, pa);
-    QWebFrame* frame = pa.page_->mainFrame();
+    Page* page = new Page;
+    pages_.insert(key, page);
+    QWebFrame* frame = page->mainFrame();
     connect(frame, SIGNAL(titleChanged(QString)),
             sender(), SLOT(titleChanged(QString)));
     connect(frame, SIGNAL(urlChanged(QUrl)),
             sender(), SLOT(urlChanged(QUrl)));
+    connect(page, SIGNAL(pngRendered(QByteArray)),
+            sender(), SLOT(pngRendered(QByteArray)));
 }
 
 void Pages::deletePage(QString key) {
     It it = pages_.find(key);
     if (it != pages_.end()) {
-        it->page_->deleteLater();
+        Page* page = *it;
+        page->deleteLater();
         pages_.erase(it);
     }
 }
@@ -48,9 +46,8 @@ void Pages::loadInPage(QString key, QUrl url) {
 void Pages::renderPage(QString key) {
     It it = pages_.find(key);
     if (it != pages_.end()) {
-        Page* page = it->page_;
-        QByteArray& ba = it->image_;
-        page->renderPng(ba);
+        Page* page = *it;
+        page->renderPng();
     }
 }
 
@@ -104,7 +101,7 @@ void Pages::keyed(QString key, int k, QEvent::Type type,
 Page* Pages::pageOf(QString key) const {
     CIt it = pages_.find(key);
     if (it != pages_.end()) {
-        return it->page_;
+        return *it;
     } else {
         return 0;
     }

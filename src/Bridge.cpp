@@ -69,6 +69,10 @@ void Bridge::post(const F& f) {
     WServer::instance()->post(sessionId_, f);
 }
 
+QByteArray Bridge::image() const {
+    return image_;
+}
+
 void Bridge::titleChanged(QString title) {
     WString wtitle = toWString(title);
     post(boost::bind(&App::titleChanged, wtitle));
@@ -77,5 +81,9 @@ void Bridge::titleChanged(QString title) {
 void Bridge::urlChanged(QUrl url) {
     WString wurl = toWString(url.toString());
     post(boost::bind(&App::urlChanged, wurl));
+}
+
+void Bridge::pngRendered(QByteArray image) {
+    image_ = image;
 }
 

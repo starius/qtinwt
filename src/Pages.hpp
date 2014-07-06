@@ -16,8 +16,6 @@ public:
 
     static Pages* globalInstance();
 
-    QByteArray imageOfPage(QString key) const;
-
 public slots:
     void createPage(QString key);
     void deletePage(QString key);
@@ -32,11 +30,8 @@ public slots:
         Qt::KeyboardModifiers modifiers, QString text);
 
 private:
-    struct PageA {
-        Page* page_;
-        QByteArray image_;
-    };
-    typedef QHash<QString, PageA> Hash;
+    Page* page_;
+    typedef QHash<QString, Page*> Hash;
     Hash pages_;
     typedef Hash::Iterator It;
     typedef Hash::const_iterator CIt;
