@@ -31,6 +31,7 @@ public:
     void requestRendering();
 
 private:
+    JSignal<> timed_;
     Resource* resource_;
     Bridge* bridge_;
     WLineEdit* address_;
@@ -47,6 +48,7 @@ private:
     void keyPressed(const WKeyEvent& e);
     void requestRenderingImpl();
     void onTimeout();
+    void setInterval();
 };
 
 #endif

@@ -1,5 +1,5 @@
 #include <boost/bind.hpp>
-#include <Wt/WTimer>
+#include <boost/lexical_cast.hpp>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
 #include <Wt/WLineEdit>
@@ -14,13 +14,17 @@
 
 using namespace Wt;
 
+#define TO_S boost::lexical_cast<std::string>
+
 const int REFRESH_MSEC = 1000;
 
 App::App(const WEnvironment& env):
-    WQApplication(env, /* loop */ true) {
+    WQApplication(env, /* loop */ true),
+    timed_(this, "timed") {
 }
 
 void App::create() {
+    timed_.connect(this, &App::onTimeout);
     address_= new WLineEdit;
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
@@ -70,11 +74,13 @@ void App::urlChanged(WString url) {
 
 void App::imageChanged() {
     qiwApp->timeout_ = REFRESH_MSEC;
+    qiwApp->setInterval();
     qiwApp->resource_->setChanged();
 }
 
 void App::requestRendering() {
     timeout_ = REFRESH_MSEC;
+    setInterval();
     requestRenderingImpl();
 }
 
@@ -83,9 +89,16 @@ void App::requestRenderingImpl() {
 }
 
 void App::onTimeout() {
-    WTimer::singleShot(timeout_, this, &App::onTimeout);
+    setInterval();
     timeout_ *= 2;
     requestRenderingImpl();
+}
+
+void App::setInterval() {
+    doJavaScript("if (window.timeout_) {"
+        "clearTimeout(window.timeout_); }"
+        "window.timeout_ = setInterval(function(){" +
+        timed_.createCall() + ";}," + TO_S(timeout_) + ");");
 }
 
 void App::navigate() {
