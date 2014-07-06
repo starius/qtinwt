@@ -29,7 +29,7 @@ public slots:
     void wheeled(QString key, int, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
     void keyed(QString key, int k, QEvent::Type type,
-        Qt::KeyboardModifiers modifiers);
+        Qt::KeyboardModifiers modifiers, QString text);
 
 private:
     struct PageA {

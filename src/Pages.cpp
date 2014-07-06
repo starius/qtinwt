@@ -85,15 +85,14 @@ void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
 }
 
 void Pages::keyed(QString key, int k, QEvent::Type type,
-        Qt::KeyboardModifiers modifiers) {
+        Qt::KeyboardModifiers modifiers, QString text) {
     if (k == Qt::Key_Control || k == Qt::Key_Shift ||
             k == Qt::Key_Alt) {
         return;
     }
     Page* page = pageOf(key);
     if (page) {
-        QString text;
-        if (isalpha(k)) {
+        if (text.isEmpty() && isalpha(k)) {
             bool shift = modifiers.testFlag(Qt::ShiftModifier);
             text = QChar(shift ? k : tolower(k));
         }

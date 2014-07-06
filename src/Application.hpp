@@ -31,6 +31,7 @@ private:
     Resource* resource_;
     Bridge* bridge_;
     WLineEdit* address_;
+    WLineEdit* input_;
     Image* image_;
 
     void navigate();
@@ -39,6 +40,7 @@ private:
     void mouseWheel(const WMouseEvent& e);
     void keyDown(const WKeyEvent& e);
     void keyUp(const WKeyEvent& e);
+    void keyPressed(const WKeyEvent& e);
 };
 
 #endif

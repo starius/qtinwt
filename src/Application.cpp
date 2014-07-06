@@ -20,6 +20,7 @@ App::App(const WEnvironment& env):
 
 void App::create() {
     address_= new WLineEdit;
+    input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
     bridge_ = new Bridge;
     bridge_->createP();
@@ -30,6 +31,7 @@ void App::create() {
     image_->mouseWentDown().connect(this, &App::mouseDown);
     image_->mouseWentUp().connect(this, &App::mouseUp);
     image_->mouseWheel().connect(this, &App::mouseWheel);
+    input_->keyPressed().connect(this, &App::keyPressed);
     globalKeyWentDown().connect(this, &App::keyDown);
     globalKeyWentUp().connect(this, &App::keyUp);
     WTimer* timer = new WTimer(this);
@@ -42,6 +44,7 @@ void App::create() {
     root()->setLayout(layout);
     layout->addWidget(address_);
     layout->addWidget(image_, 1);
+    layout->addWidget(input_);
 }
 
 void App::destroy() {
@@ -197,13 +200,21 @@ void App::keyDown(const WKeyEvent& e) {
     QEvent::Type type = QEvent::KeyPress;
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->keye(k, type, modifiers);
+    bridge_->keye(k, type, modifiers, "");
 }
 
 void App::keyUp(const WKeyEvent& e) {
     QEvent::Type type = QEvent::KeyRelease;
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->keye(k, type, modifiers);
+    bridge_->keye(k, type, modifiers, "");
+}
+
+void App::keyPressed(const WKeyEvent& e) {
+    int k = event2key(e);
+    Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
+    QString text = toQString(e.text());
+    bridge_->keye(k, QEvent::KeyPress, modifiers, text);
+    bridge_->keye(k, QEvent::KeyRelease, modifiers, text);
 }
 
