@@ -36,6 +36,7 @@ void App::create() {
     globalKeyWentDown().connect(this, &App::keyDown);
     globalKeyWentUp().connect(this, &App::keyUp);
     WVBoxLayout* layout = new WVBoxLayout;
+    layout->setContentsMargins(0, 0, 0, 0);
     root()->setLayout(layout);
     layout->addWidget(address_);
     layout->addWidget(image_, 1);
