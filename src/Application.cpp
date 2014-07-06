@@ -185,7 +185,12 @@ static Key2Key keymap() {
 Key2Key k2k_ = keymap();
 
 static int event2key(const WKeyEvent& e) {
-    return k2k_.value(e.key(), Qt::Key_Escape);
+    if (e.key() == Wt::Key_unknown) {
+        // http://redmine.webtoolkit.eu/issues/3435
+        return e.keyCode();
+    } else {
+        return k2k_.value(e.key(), Qt::Key_Escape);
+    }
 }
 
 void App::keyDown(const WKeyEvent& e) {
