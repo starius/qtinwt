@@ -45,7 +45,16 @@ void Bridge::loadInP(QUrl url) {
     emit loadInPage(qSessionId_, url);
 }
 
-void Bridge::renderP() {
+void Bridge::renderP(int timeout) {
+    if (!renderingPending_) {
+        renderingPending_ = true;
+        QTimer::singleShot(timeout, this,
+                SLOT(realRenderP()));
+    }
+}
+
+void Bridge::realRenderP() {
+    renderingPending_ = false;
     emit renderPage(qSessionId_);
 }
 

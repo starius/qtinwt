@@ -96,7 +96,7 @@ void App::requestRendering() {
 }
 
 void App::requestRenderingImpl() {
-    bridge_->renderP();
+    bridge_->renderP(REFRESH_MSEC / 2);
 }
 
 void App::onTimeout() {

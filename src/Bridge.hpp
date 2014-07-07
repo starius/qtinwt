@@ -14,7 +14,7 @@ public:
     void createP();
     void deleteP();
     void loadInP(QUrl url);
-    void renderP();
+    void renderP(int timeout);
     void setS(QSize size);
     void mouse(QEvent::Type type, MOUSE_ARGS);
     void wheel(int delta, MOUSE_ARGS);
@@ -44,11 +44,14 @@ public slots:
     void titleChanged(QString title);
     void urlChanged(QUrl url);
     void pngRendered(QByteArray image);
+    void realRenderP();
 
 private:
     std::string sessionId_;
     QString qSessionId_;
     QByteArray image_;
+    bool renderingPending_;
+
 };
 
 #endif
