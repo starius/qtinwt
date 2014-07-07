@@ -16,6 +16,9 @@ Pages* Pages::globalInstance() {
 }
 
 void Pages::createPage(QString key) {
+    if (!sender()) {
+        return;
+    }
     Page* page = new Page;
     pages_.insert(key, page);
     QWebFrame* frame = page->mainFrame();
