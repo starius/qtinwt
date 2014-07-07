@@ -17,8 +17,6 @@ using namespace Wt;
 
 #define TO_S boost::lexical_cast<std::string>
 
-const int REFRESH_MSEC = 1000;
-
 App::App(const WEnvironment& env):
     WApplication(env),
     sessionId_(QString::fromUtf8(sessionId().c_str())),

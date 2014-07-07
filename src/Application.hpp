@@ -12,6 +12,8 @@ class Image;
 
 #define qiwApp App::instance()
 
+const int REFRESH_MSEC = 1000;
+
 class App : public WApplication {
 public:
     App(const WEnvironment& env);

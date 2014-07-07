@@ -3,8 +3,11 @@
 #include "Application.hpp"
 #include "Page.hpp"
 
+#include <QtCore>
+
 Page::Page(QString session_id):
-    sessionId_(session_id.toStdString()) {
+    sessionId_(session_id.toStdString()),
+    renderingPending_(false) {
     setViewportSize(QSize(640, 480));
     setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
     connect(this, SIGNAL(linkClicked(QUrl)),
@@ -21,6 +24,15 @@ void Page::post(const F& f) {
 }
 
 void Page::renderPng() {
+    if (!renderingPending_) {
+        renderingPending_ = true;
+        QTimer::singleShot(REFRESH_MSEC / 2, this,
+                SLOT(realRenderPng()));
+    }
+}
+
+void Page::realRenderPng() {
+    renderingPending_ = false;
     QByteArray ba;
     QImage image(viewportSize(), QImage::Format_ARGB32);
     QPainter painter(&image);

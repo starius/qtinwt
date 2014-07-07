@@ -19,9 +19,11 @@ public slots:
     void loadInMainFrame(QUrl url);
     void onTitleChanged(QString title);
     void onUrlChanged(QUrl url);
+    void realRenderPng();
 
 private:
     std::string sessionId_;
+    bool renderingPending_;
 };
 
 #endif
