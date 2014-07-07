@@ -41,6 +41,7 @@ private:
     int timeout_;
 
     void navigate();
+    void goBack();
     void mouseDown(const WMouseEvent& e);
     void mouseUp(const WMouseEvent& e);
     void mouseWheel(const WMouseEvent& e);

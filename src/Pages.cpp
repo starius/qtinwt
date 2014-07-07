@@ -15,6 +15,8 @@ Pages::Pages() {
             this, SLOT(onDeletePage(QString)));
     connect(this, SIGNAL(loadInPage(QString, QUrl)),
             this, SLOT(onLoadInPage(QString, QUrl)));
+    connect(this, SIGNAL(goBack(QString)),
+            this, SLOT(onGoBack(QString)));
     connect(this, SIGNAL(renderPage(QString)),
             this, SLOT(onRenderPage(QString)));
     connect(this, SIGNAL(setSize(QString, QSize)),
@@ -58,6 +60,16 @@ void Pages::onLoadInPage(QString key, QUrl url) {
     Page* page = pageOf(key);
     if (page) {
         page->mainFrame()->load(url);
+    }
+}
+
+void Pages::onGoBack(QString key) {
+    Page* page = pageOf(key);
+    if (page) {
+        QWebHistory* history = page->history();
+        if (history->canGoBack()) {
+            history->back();
+        }
     }
 }
 

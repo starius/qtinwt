@@ -22,6 +22,7 @@ signals:
     void createPage(QString key);
     void deletePage(QString key);
     void loadInPage(QString key, QUrl url);
+    void goBack(QString key);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
     void mouse(QString key, QEvent::Type, QPoint,
@@ -35,6 +36,7 @@ public slots:
     void onCreatePage(QString key);
     void onDeletePage(QString key);
     void onLoadInPage(QString key, QUrl url);
+    void onGoBack(QString key);
     void onRenderPage(QString key);
     void onSetSize(QString key, QSize size);
     void onMouse(QString key, QEvent::Type, QPoint,

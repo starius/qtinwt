@@ -3,6 +3,8 @@
 #include <Wt/WEnvironment>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
+#include <Wt/WHBoxLayout>
+#include <Wt/WPushButton>
 #include <Wt/WLineEdit>
 #include <Wt/WText>
 #include <QtGui>
@@ -30,6 +32,8 @@ void App::initialize() {
         return;
     }
     timed_.connect(this, &App::onTimeout);
+    WPushButton* back = new WPushButton(" < ");
+    back->clicked().connect(this, &App::goBack);
     address_= new WLineEdit;
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
@@ -45,9 +49,13 @@ void App::initialize() {
     globalKeyWentDown().connect(this, &App::keyDown);
     globalKeyWentUp().connect(this, &App::keyUp);
     WVBoxLayout* layout = new WVBoxLayout;
-    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setContentsMargins(3, 0, 0, 0);
     root()->setLayout(layout);
-    layout->addWidget(address_);
+    WHBoxLayout* top_layout = new WHBoxLayout;
+    top_layout->setContentsMargins(0, 0, 0, 0);
+    top_layout->addWidget(back);
+    top_layout->addWidget(address_, 1);
+    layout->addLayout(top_layout);
     layout->addWidget(image_, 1);
     layout->addWidget(input_);
     timeout_ = REFRESH_MSEC;
@@ -120,6 +128,11 @@ void App::navigate() {
     }
     address_->setText(toWString(url));
     emit PAGES->loadInPage(sessionId_, QUrl(url));
+    requestRendering();
+}
+
+void App::goBack() {
+    emit PAGES->goBack(sessionId_);
     requestRendering();
 }
 
