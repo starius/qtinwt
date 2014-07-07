@@ -4,10 +4,11 @@
 #include "Bridge.hpp"
 #include "Pages.hpp"
 #include "Application.hpp"
-#include "util.hpp"
 
 Bridge::Bridge() {
     sessionId_ = wApp->sessionId();
+    qSessionId_ = QString::fromUtf8(sessionId_.c_str());
+    renderingPending_ = false;
     connect(this, SIGNAL(createPage(QString)),
             PAGES, SLOT(createPage(QString)));
     connect(this, SIGNAL(deletePage(QString)),
@@ -33,36 +34,36 @@ Bridge::Bridge() {
 }
 
 void Bridge::createP() {
-    emit createPage(qsessionId());
+    emit createPage(qSessionId_);
 }
 
 void Bridge::deleteP() {
-    emit deletePage(qsessionId());
+    emit deletePage(qSessionId_);
 }
 
 void Bridge::loadInP(QUrl url) {
-    emit loadInPage(qsessionId(), url);
+    emit loadInPage(qSessionId_, url);
 }
 
 void Bridge::renderP() {
-    emit renderPage(qsessionId());
+    emit renderPage(qSessionId_);
 }
 
 void Bridge::setS(QSize size) {
-    emit setSize(qsessionId(), size);
+    emit setSize(qSessionId_, size);
 }
 
 void Bridge::mouse(QEvent::Type type, MOUSE_ARGS) {
-    emit moused(qsessionId(), type, MOUSE_NAMES);
+    emit moused(qSessionId_, type, MOUSE_NAMES);
 }
 
 void Bridge::wheel(int delta, MOUSE_ARGS) {
-    emit wheeled(qsessionId(), delta, MOUSE_NAMES);
+    emit wheeled(qSessionId_, delta, MOUSE_NAMES);
 }
 
 void Bridge::keye(int k, QEvent::Type type,
         Qt::KeyboardModifiers modifiers, QString text) {
-    emit keyed(qsessionId(), k, type, modifiers, text);
+    emit keyed(qSessionId_, k, type, modifiers, text);
 }
 
 void Bridge::post(const F& f) {

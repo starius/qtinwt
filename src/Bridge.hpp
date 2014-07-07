@@ -47,6 +47,7 @@ public slots:
 
 private:
     std::string sessionId_;
+    QString qSessionId_;
     QByteArray image_;
 };
 
