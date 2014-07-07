@@ -1,8 +1,10 @@
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
+#include <Wt/WEnvironment>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
 #include <Wt/WLineEdit>
+#include <Wt/WText>
 #include <QtGui>
 
 #include "Application.hpp"
@@ -20,10 +22,15 @@ const int REFRESH_MSEC = 1000;
 
 App::App(const WEnvironment& env):
     WQApplication(env, /* loop */ true),
-    timed_(this, "timed") {
+    timed_(this, "timed"),
+    bridge_(0), resource_(0) {
 }
 
 void App::create() {
+    if (!environment().ajax()) {
+        new WText("Please enable JavaScript", root());
+        return;
+    }
     timed_.connect(this, &App::onTimeout);
     address_= new WLineEdit;
     input_= new WLineEdit;
@@ -51,9 +58,13 @@ void App::create() {
 }
 
 void App::destroy() {
-    bridge_->deleteP();
-    bridge_->deleteLater();
-    delete resource_;
+    if (bridge_) {
+        bridge_->deleteP();
+        bridge_->deleteLater();
+    }
+    if (resource_) {
+        delete resource_;
+    }
 }
 
 App* App::instance() {
