@@ -108,6 +108,7 @@ void App::navigate() {
     }
     address_->setText(toWString(url));
     bridge_->loadInP(QUrl(url));
+    requestRendering();
 }
 
 static QPoint cor2pos(const Coordinates& cor) {
