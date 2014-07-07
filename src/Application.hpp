@@ -2,38 +2,37 @@
 #define QIW_APPLICATION_HPP_
 
 #include <Wt/WGlobal>
-
-#include "WQApplication"
+#include <Wt/WApplication>
+#include <QtCore>
 
 using namespace Wt;
 
 class Resource;
-class Bridge;
 class Image;
 
 #define qiwApp App::instance()
 
-class App : public WQApplication {
+class App : public WApplication {
 public:
     App(const WEnvironment& env);
 
-    void create();
-    void destroy();
+    void initialize();
+    void finalize();
 
     static App* instance();
 
-    Bridge* bridge() const;
+    static void titleChanged(QString title);
+    static void urlChanged(QUrl url);
+    static void imageChanged(QByteArray image);
 
-    static void titleChanged(WString title);
-    static void urlChanged(WString url);
-    static void imageChanged();
+    void setSize(int width, int height);
 
     void requestRendering();
 
 private:
+    QString sessionId_;
     JSignal<> timed_;
     Resource* resource_;
-    Bridge* bridge_;
     WLineEdit* address_;
     WLineEdit* input_;
     Image* image_;

@@ -16,17 +16,32 @@ public:
 
     static Pages* globalInstance();
 
-public slots:
+    friend class App;
+
+signals:
     void createPage(QString key);
     void deletePage(QString key);
     void loadInPage(QString key, QUrl url);
     void renderPage(QString key);
     void setSize(QString key, QSize size);
-    void moused(QString key, QEvent::Type, QPoint,
+    void mouse(QString key, QEvent::Type, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
-    void wheeled(QString key, int, QPoint,
+    void wheel(QString key, int, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
-    void keyed(QString key, int k, QEvent::Type type,
+    void key(QString key, int k, QEvent::Type type,
+            Qt::KeyboardModifiers modifiers, QString text);
+
+public slots:
+    void onCreatePage(QString key);
+    void onDeletePage(QString key);
+    void onLoadInPage(QString key, QUrl url);
+    void onRenderPage(QString key);
+    void onSetSize(QString key, QSize size);
+    void onMouse(QString key, QEvent::Type, QPoint,
+        Qt::MouseButton, Qt::KeyboardModifiers);
+    void onWheel(QString key, int, QPoint,
+        Qt::MouseButton, Qt::KeyboardModifiers);
+    void onKey(QString key, int k, QEvent::Type type,
         Qt::KeyboardModifiers modifiers, QString text);
 
 private:

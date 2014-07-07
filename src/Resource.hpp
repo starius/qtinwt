@@ -2,6 +2,7 @@
 #define QIW_RESOURCE_HPP_
 
 #include <Wt/WResource>
+#include <QtCore>
 
 using namespace Wt;
 
@@ -16,8 +17,13 @@ public:
     void handleRequest(const Http::Request& request,
                        Http::Response& response);
 
+    QByteArray image() const;
+
+    void setImage(QByteArray image);
+
 private:
     Page* page_;
+    QByteArray image_;
 };
 
 #endif

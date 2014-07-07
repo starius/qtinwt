@@ -1,9 +1,7 @@
 #include <Wt/Http/Response>
 
-#include "Resource.hpp"
 #include "Application.hpp"
-#include "Bridge.hpp"
-#include "util.hpp"
+#include "Resource.hpp"
 
 Resource::Resource() {
 }
@@ -22,7 +20,7 @@ const int EMPTY_GIF_SIZE = 43;
 
 void Resource::handleRequest(const Http::Request& request,
                              Http::Response& response) {
-    QByteArray ba = qiwApp->bridge()->image();
+    QByteArray ba = image();
     if (ba.isEmpty()) {
         response.setMimeType("image/gif");
         response.out().write(EMPTY_GIF, EMPTY_GIF_SIZE);
@@ -30,5 +28,13 @@ void Resource::handleRequest(const Http::Request& request,
         response.setMimeType("image/png");
         response.out().write(ba.constData(), ba.size());
     }
+}
+
+QByteArray Resource::image() const {
+    return image_;
+}
+
+void Resource::setImage(QByteArray image) {
+    image_ = image;
 }
 

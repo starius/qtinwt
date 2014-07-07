@@ -9,28 +9,43 @@ Pages* Pages::globalInstance_ = 0;
 
 Pages::Pages() {
     globalInstance_ = this;
+    connect(this, SIGNAL(createPage(QString)),
+            this, SLOT(onCreatePage(QString)));
+    connect(this, SIGNAL(deletePage(QString)),
+            this, SLOT(onDeletePage(QString)));
+    connect(this, SIGNAL(loadInPage(QString, QUrl)),
+            this, SLOT(onLoadInPage(QString, QUrl)));
+    connect(this, SIGNAL(renderPage(QString)),
+            this, SLOT(onRenderPage(QString)));
+    connect(this, SIGNAL(setSize(QString, QSize)),
+            this, SLOT(onSetSize(QString, QSize)));
+    connect(this, SIGNAL(mouse(QString, QEvent::Type, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)),
+            this, SLOT(onMouse(QString, QEvent::Type, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)));
+    connect(this, SIGNAL(wheel(QString, int, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)),
+            this, SLOT(onWheel(QString, int, QPoint,
+                Qt::MouseButton, Qt::KeyboardModifiers)));
+    connect(this, SIGNAL(key(QString, int, QEvent::Type,
+                Qt::KeyboardModifiers, QString)),
+            this, SLOT(onKey(QString, int, QEvent::Type,
+                Qt::KeyboardModifiers, QString)));
 }
 
 Pages* Pages::globalInstance() {
     return globalInstance_;
 }
 
-void Pages::createPage(QString key) {
+void Pages::onCreatePage(QString key) {
     if (!sender()) {
         return;
     }
-    Page* page = new Page;
+    Page* page = new Page(key);
     pages_.insert(key, page);
-    QWebFrame* frame = page->mainFrame();
-    connect(frame, SIGNAL(titleChanged(QString)),
-            sender(), SLOT(titleChanged(QString)));
-    connect(frame, SIGNAL(urlChanged(QUrl)),
-            sender(), SLOT(urlChanged(QUrl)));
-    connect(page, SIGNAL(pngRendered(QByteArray)),
-            sender(), SLOT(pngRendered(QByteArray)));
 }
 
-void Pages::deletePage(QString key) {
+void Pages::onDeletePage(QString key) {
     It it = pages_.find(key);
     if (it != pages_.end()) {
         Page* page = *it;
@@ -39,14 +54,14 @@ void Pages::deletePage(QString key) {
     }
 }
 
-void Pages::loadInPage(QString key, QUrl url) {
+void Pages::onLoadInPage(QString key, QUrl url) {
     Page* page = pageOf(key);
     if (page) {
         page->mainFrame()->load(url);
     }
 }
 
-void Pages::renderPage(QString key) {
+void Pages::onRenderPage(QString key) {
     It it = pages_.find(key);
     if (it != pages_.end()) {
         Page* page = *it;
@@ -54,14 +69,15 @@ void Pages::renderPage(QString key) {
     }
 }
 
-void Pages::setSize(QString key, QSize size) {
+void Pages::onSetSize(QString key, QSize size) {
     Page* page = pageOf(key);
     if (page) {
         page->setViewportSize(size);
     }
 }
 
-void Pages::moused(QString key, QEvent::Type type, MOUSE_ARGS) {
+void Pages::onMouse(QString key, QEvent::Type type,
+        MOUSE_ARGS) {
     Page* page = pageOf(key);
     if (page) {
         QMouseEvent e(type, pos, button, button, modifiers);
@@ -69,7 +85,7 @@ void Pages::moused(QString key, QEvent::Type type, MOUSE_ARGS) {
     }
 }
 
-void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
+void Pages::onWheel(QString key, int delta, MOUSE_ARGS) {
     Page* page = pageOf(key);
     if (page) {
         Qt::Orientation o = Qt::Vertical;
@@ -84,7 +100,7 @@ void Pages::wheeled(QString key, int delta, MOUSE_ARGS) {
     }
 }
 
-void Pages::keyed(QString key, int k, QEvent::Type type,
+void Pages::onKey(QString key, int k, QEvent::Type type,
         Qt::KeyboardModifiers modifiers, QString text) {
     if (k == Qt::Key_Control || k == Qt::Key_Shift ||
             k == Qt::Key_Alt) {

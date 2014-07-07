@@ -15,10 +15,9 @@ FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtWebKit QtNetwork)
 INCLUDE(${QT_USE_FILE})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/wtwithqt/lib/)
 
-file(GLOB headers "*.hpp" "wtwithqt/lib/*.h")
-file(GLOB sources "*.cpp" "wtwithqt/lib/*.C")
+file(GLOB headers "*.hpp")
+file(GLOB sources "*.cpp")
 
 ADD_DEFINITIONS(-DWT_NO_SLOT_MACROS)
 

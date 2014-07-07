@@ -10,7 +10,6 @@
 #include "Application.hpp"
 #include "Resource.hpp"
 #include "Pages.hpp"
-#include "Bridge.hpp"
 #include "Image.hpp"
 #include "util.hpp"
 
@@ -21,12 +20,13 @@ using namespace Wt;
 const int REFRESH_MSEC = 1000;
 
 App::App(const WEnvironment& env):
-    WQApplication(env, /* loop */ true),
+    WApplication(env),
+    sessionId_(QString::fromUtf8(sessionId().c_str())),
     timed_(this, "timed"),
-    bridge_(0), resource_(0) {
+    resource_(0) {
 }
 
-void App::create() {
+void App::initialize() {
     if (!environment().ajax()) {
         new WText("Please enable JavaScript", root());
         return;
@@ -35,9 +35,8 @@ void App::create() {
     address_= new WLineEdit;
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
-    bridge_ = new Bridge;
-    bridge_->createP();
-    bridge_->loadInP(QUrl("http://mail.ru/"));
+    emit PAGES->createPage(sessionId_);
+    emit PAGES->loadInPage(sessionId_, QUrl("http://mail.ru/"));
     resource_ = new Resource;
     image_ = new Image;
     image_->setImageLink(resource_);
@@ -57,11 +56,8 @@ void App::create() {
     onTimeout();
 }
 
-void App::destroy() {
-    if (bridge_) {
-        bridge_->deleteP();
-        bridge_->deleteLater();
-    }
+void App::finalize() {
+    emit PAGES->deletePage(sessionId_);
     if (resource_) {
         delete resource_;
     }
@@ -71,22 +67,29 @@ App* App::instance() {
     return D_CAST<App*>(wApp);
 }
 
-Bridge* App::bridge() const {
-    return bridge_;
+void App::titleChanged(QString title) {
+    wApp->setTitle(toWString(title));
 }
 
-void App::titleChanged(WString title) {
-    wApp->setTitle(title);
+void App::urlChanged(QUrl url) {
+    qiwApp->address_->setText(toWString(url.toString()));
 }
 
-void App::urlChanged(WString url) {
-    qiwApp->address_->setText(url);
+void App::imageChanged(QByteArray image) {
+    App* app = qiwApp;
+    if (image != app->resource_->image()) {
+        app->resource_->setImage(image);
+        app->timeout_ = REFRESH_MSEC;
+        app->setInterval();
+        app->resource_->setChanged();
+    }
 }
 
-void App::imageChanged() {
-    qiwApp->timeout_ = REFRESH_MSEC;
-    qiwApp->setInterval();
-    qiwApp->resource_->setChanged();
+void App::setSize(int width, int height) {
+    width = std::max(100, std::min(2000, width));
+    height = std::max(100, std::min(2000, height));
+    emit PAGES->setSize(sessionId_, QSize(width, height));
+    requestRendering();
 }
 
 void App::requestRendering() {
@@ -96,7 +99,7 @@ void App::requestRendering() {
 }
 
 void App::requestRenderingImpl() {
-    bridge_->renderP(REFRESH_MSEC / 2);
+    emit PAGES->renderPage(sessionId_);
 }
 
 void App::onTimeout() {
@@ -118,7 +121,7 @@ void App::navigate() {
         url = "http://" + url;
     }
     address_->setText(toWString(url));
-    bridge_->loadInP(QUrl(url));
+    emit PAGES->loadInPage(sessionId_, QUrl(url));
     requestRendering();
 }
 
@@ -170,7 +173,7 @@ void App::mouseDown(const WMouseEvent& e) {
     QPoint pos = event2pos(e);
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->mouse(type, MOUSE_NAMES);
+    emit PAGES->mouse(sessionId_, type, MOUSE_NAMES);
     requestRendering();
 }
 
@@ -179,7 +182,7 @@ void App::mouseUp(const WMouseEvent& e) {
     QPoint pos = event2pos(e);
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->mouse(type, MOUSE_NAMES);
+    emit PAGES->mouse(sessionId_, type, MOUSE_NAMES);
 }
 
 void App::mouseWheel(const WMouseEvent& e) {
@@ -187,7 +190,7 @@ void App::mouseWheel(const WMouseEvent& e) {
     int delta = event2wheel(e);
     Qt::MouseButton button = event2button(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->wheel(delta, MOUSE_NAMES);
+    emit PAGES->wheel(sessionId_, delta, MOUSE_NAMES);
     requestRendering();
 }
 
@@ -246,7 +249,7 @@ void App::keyDown(const WKeyEvent& e) {
     QEvent::Type type = QEvent::KeyPress;
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->keye(k, type, modifiers, "");
+    emit PAGES->key(sessionId_, k, type, modifiers, "");
     requestRendering();
 }
 
@@ -254,15 +257,17 @@ void App::keyUp(const WKeyEvent& e) {
     QEvent::Type type = QEvent::KeyRelease;
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
-    bridge_->keye(k, type, modifiers, "");
+    emit PAGES->key(sessionId_, k, type, modifiers, "");
 }
 
 void App::keyPressed(const WKeyEvent& e) {
     int k = event2key(e);
     Qt::KeyboardModifiers modifiers = event2mod(e.modifiers());
     QString text = toQString(e.text());
-    bridge_->keye(k, QEvent::KeyPress, modifiers, text);
-    bridge_->keye(k, QEvent::KeyRelease, modifiers, text);
+    emit PAGES->key(sessionId_, k, QEvent::KeyPress,
+            modifiers, text);
+    emit PAGES->key(sessionId_, k, QEvent::KeyRelease,
+            modifiers, text);
     requestRendering();
 }
 
