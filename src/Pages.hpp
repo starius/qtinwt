@@ -30,7 +30,6 @@ public slots:
         Qt::KeyboardModifiers modifiers, QString text);
 
 private:
-    Page* page_;
     typedef QHash<QString, Page*> Hash;
     Hash pages_;
     typedef Hash::Iterator It;
