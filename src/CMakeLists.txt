@@ -21,7 +21,7 @@ file(GLOB sources "*.cpp")
 
 ADD_DEFINITIONS(-DWT_NO_SLOT_MACROS)
 
-QT4_WRAP_CPP(MOCSrcs ${headers}
+QT4_WRAP_CPP(MOCSrcs Pages.hpp Page.hpp
     OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
 ADD_EXECUTABLE(qtinwt ${sources} ${MOCSrcs})
