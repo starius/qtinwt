@@ -6,6 +6,17 @@
 
 #include <QtGui>
 
+#ifdef __MINGW32__
+
+#include <QtPlugin>
+// http://permalink.gmane.org/gmane.comp.lib.qt.general/42520
+Q_IMPORT_PLUGIN(qcncodecs)
+Q_IMPORT_PLUGIN(qjpcodecs)
+Q_IMPORT_PLUGIN(qtwcodecs)
+Q_IMPORT_PLUGIN(qkrcodecs)
+
+#endif // __MINGW32__
+
 using namespace Wt;
 
 WApplication* createApp(const WEnvironment& e) {
