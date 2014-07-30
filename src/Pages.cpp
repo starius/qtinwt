@@ -120,7 +120,7 @@ void Pages::onKey(QString key, int k, QEvent::Type type,
     }
     Page* page = pageOf(key);
     if (page) {
-        if (text.isEmpty() && isalpha(k)) {
+        if (text.isEmpty() && k <= UCHAR_MAX && isalpha(k)) {
             bool shift = modifiers.testFlag(Qt::ShiftModifier);
             text = QChar(shift ? k : tolower(k));
         }
