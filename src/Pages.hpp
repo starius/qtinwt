@@ -24,6 +24,7 @@ signals:
     void loadInPage(QString key, QUrl url);
     void goBack(QString key);
     void renderPage(QString key);
+    void htmlPage(QString key);
     void setSize(QString key, QSize size);
     void mouse(QString key, QEvent::Type, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
@@ -38,6 +39,7 @@ public slots:
     void onLoadInPage(QString key, QUrl url);
     void onGoBack(QString key);
     void onRenderPage(QString key);
+    void onHtmlPage(QString key);
     void onSetSize(QString key, QSize size);
     void onMouse(QString key, QEvent::Type, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);

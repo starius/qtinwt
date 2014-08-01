@@ -1,6 +1,7 @@
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
 #include <Wt/WEnvironment>
+#include <Wt/WStackedWidget>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
 #include <Wt/WHBoxLayout>
@@ -23,7 +24,7 @@ App::App(const WEnvironment& env):
     WApplication(env),
     sessionId_(QString::fromUtf8(sessionId().c_str())),
     timed_(this, "timed"),
-    resource_(0) {
+    resource_(0), html_mode_(false) {
 }
 
 void App::initialize() {
@@ -32,8 +33,12 @@ void App::initialize() {
         return;
     }
     timed_.connect(this, &App::onTimeout);
+    stacked_ = new WStackedWidget;
+    html_ = new WText;
     WPushButton* back = new WPushButton(" < ");
     back->clicked().connect(this, &App::goBack);
+    mode_button_ = new WPushButton;
+    mode_button_->clicked().connect(this, &App::changeMode);
     address_= new WLineEdit;
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
@@ -54,12 +59,18 @@ void App::initialize() {
     WHBoxLayout* top_layout = new WHBoxLayout;
     top_layout->setContentsMargins(0, 0, 0, 0);
     top_layout->addWidget(back);
+    back->setMinimumSize(60, 20);
+    mode_button_->setMinimumSize(60, 20);
+    top_layout->addWidget(mode_button_);
     top_layout->addWidget(address_, 1);
     layout->addLayout(top_layout);
-    layout->addWidget(image_, 1);
+    layout->addWidget(stacked_, 1);
     layout->addWidget(input_);
+    stacked_->addWidget(image_);
+    stacked_->addWidget(html_);
     timeout_ = REFRESH_MSEC;
     onTimeout();
+    setHtmlMode(false);
 }
 
 void App::finalize() {
@@ -89,6 +100,11 @@ void App::imageChanged(QByteArray image) {
         app->setInterval();
         app->resource_->setChanged();
     }
+}
+
+void App::htmlChanged(QString html) {
+    App* app = qiwApp;
+    app->html_->setText(toWString(html));
 }
 
 void App::setSize(int width, int height) {
@@ -280,5 +296,25 @@ void App::keyPressed(const WKeyEvent& e) {
     emit PAGES->key(sessionId_, k, QEvent::KeyRelease,
             modifiers, text);
     requestRendering();
+}
+
+void App::setHtmlMode(bool html) {
+    if (html) {
+        mode_button_->setText("IMG");
+        stacked_->setCurrentWidget(html_);
+        requestHtml();
+    } else {
+        mode_button_->setText("HTML");
+        stacked_->setCurrentWidget(image_);
+    }
+    html_mode_ = html;
+}
+
+void App::changeMode() {
+    setHtmlMode(!html_mode_);
+}
+
+void App::requestHtml() {
+    emit PAGES->htmlPage(sessionId_);
 }
 

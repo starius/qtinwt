@@ -19,6 +19,8 @@ Pages::Pages() {
             this, SLOT(onGoBack(QString)));
     connect(this, SIGNAL(renderPage(QString)),
             this, SLOT(onRenderPage(QString)));
+    connect(this, SIGNAL(htmlPage(QString)),
+            this, SLOT(onHtmlPage(QString)));
     connect(this, SIGNAL(setSize(QString, QSize)),
             this, SLOT(onSetSize(QString, QSize)));
     connect(this, SIGNAL(mouse(QString, QEvent::Type, QPoint,
@@ -78,6 +80,13 @@ void Pages::onRenderPage(QString key) {
     if (it != pages_.end()) {
         Page* page = *it;
         page->renderPng();
+    }
+}
+
+void Pages::onHtmlPage(QString key) {
+    Page* page = pageOf(key);
+    if (page) {
+        page->onHtmlPage();
     }
 }
 

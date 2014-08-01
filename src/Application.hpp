@@ -26,19 +26,30 @@ public:
     static void titleChanged(QString title);
     static void urlChanged(QUrl url);
     static void imageChanged(QByteArray image);
+    static void htmlChanged(QString html);
 
     void setSize(int width, int height);
 
     void requestRendering();
 
+    void requestHtml();
+
+    void setHtmlMode(bool html);
+
+    void changeMode();
+
 private:
     QString sessionId_;
     JSignal<> timed_;
     Resource* resource_;
+    WStackedWidget* stacked_;
+    WPushButton* mode_button_;
     WLineEdit* address_;
     WLineEdit* input_;
     Image* image_;
+    WText* html_;
     int timeout_;
+    bool html_mode_;
 
     void navigate();
     void goBack();

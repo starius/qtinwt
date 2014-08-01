@@ -2,6 +2,7 @@
 
 #include "Application.hpp"
 #include "Page.hpp"
+#include "SafeHtml.hpp"
 
 #include <QtCore>
 
@@ -41,6 +42,11 @@ void Page::realRenderPng() {
     buffer.open(QIODevice::WriteOnly);
     image.save(&buffer, "PNG");
     post(boost::bind(&App::imageChanged, ba));
+}
+
+void Page::onHtmlPage() {
+    QWebElement d = mainFrame()->documentElement();
+    post(boost::bind(&App::htmlChanged, safeHtml(d)));
 }
 
 void Page::loadInMainFrame(QUrl url) {

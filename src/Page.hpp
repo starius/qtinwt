@@ -20,6 +20,7 @@ public slots:
     void onTitleChanged(QString title);
     void onUrlChanged(QUrl url);
     void realRenderPng();
+    void onHtmlPage();
 
 private:
     std::string sessionId_;
