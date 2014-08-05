@@ -2,6 +2,7 @@
 #include <boost/lexical_cast.hpp>
 #include <Wt/WEnvironment>
 #include <Wt/WStackedWidget>
+#include <Wt/WScrollArea>
 #include <Wt/WContainerWidget>
 #include <Wt/WVBoxLayout>
 #include <Wt/WHBoxLayout>
@@ -34,7 +35,9 @@ void App::initialize() {
     }
     timed_.connect(this, &App::onTimeout);
     stacked_ = new WStackedWidget;
+    html_scroll_ = new WScrollArea;
     html_ = new WText;
+    html_scroll_->setWidget(html_);
     WPushButton* back = new WPushButton(" < ");
     back->clicked().connect(this, &App::goBack);
     mode_button_ = new WPushButton;
@@ -67,7 +70,7 @@ void App::initialize() {
     layout->addWidget(stacked_, 1);
     layout->addWidget(input_);
     stacked_->addWidget(image_);
-    stacked_->addWidget(html_);
+    stacked_->addWidget(html_scroll_);
     timeout_ = REFRESH_MSEC;
     onTimeout();
     setHtmlMode(false);
@@ -301,7 +304,7 @@ void App::keyPressed(const WKeyEvent& e) {
 void App::setHtmlMode(bool html) {
     if (html) {
         mode_button_->setText("IMG");
-        stacked_->setCurrentWidget(html_);
+        stacked_->setCurrentWidget(html_scroll_);
         requestHtml();
     } else {
         mode_button_->setText("HTML");

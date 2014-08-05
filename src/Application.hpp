@@ -47,6 +47,7 @@ private:
     WLineEdit* address_;
     WLineEdit* input_;
     Image* image_;
+    WScrollArea* html_scroll_;
     WText* html_;
     int timeout_;
     bool html_mode_;
