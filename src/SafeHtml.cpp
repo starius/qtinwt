@@ -53,9 +53,10 @@ static QString closeTags(QString html) {
 QString filterHtml(QWebElement element,
                    const TagCheck& tag_good,
                    const AttrCheck& attr_check) {
-    QWebElement copy = element.clone();
+    QWebElement body = element.findFirst("body");
+    QWebElement copy = body.clone();
     examineElement(copy, tag_good, attr_check);
-    QString html = copy.toOuterXml();
+    QString html = copy.toInnerXml();
     html = html.simplified();
     html = removeHtmlComments(html);
     html = closeTags(html);
