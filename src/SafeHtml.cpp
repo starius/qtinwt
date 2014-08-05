@@ -44,6 +44,12 @@ static QString removeHtmlComments(QString html) {
     return html;
 }
 
+static QString closeTags(QString html) {
+    // TODO make toOuterXml return valid XML
+    html = html.replace("<br>", "<br/>", Qt::CaseInsensitive);
+    return html;
+}
+
 QString filterHtml(QWebElement element,
                    const TagCheck& tag_good,
                    const AttrCheck& attr_check) {
@@ -52,6 +58,7 @@ QString filterHtml(QWebElement element,
     QString html = copy.toOuterXml();
     html = html.simplified();
     html = removeHtmlComments(html);
+    html = closeTags(html);
     return html;
 }
 
