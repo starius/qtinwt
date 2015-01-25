@@ -3,11 +3,9 @@
 Build and install (Debian):
 
 ```bash
-# apt-get install make cmake cmake-curses-gui gcc libwt-dev qtcreator xvfb
-
+$ sudo apt-get install make cmake cmake-curses-gui gcc libwt-dev qtcreator xvfb
 $ cmake .
 $ make
-
 $ ./run.sh
 ```
 
