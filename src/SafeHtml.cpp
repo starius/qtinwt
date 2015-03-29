@@ -5,6 +5,55 @@
 
 #include "SafeHtml.hpp"
 
+typedef QSet<QString> TagSet;
+
+TagSet good_tags_ = TagSet()
+    << "html"
+    << "body"
+    << "div"
+    << "span"
+    << "form"
+    << "input"
+    << "select"
+    << "option"
+    << "optgroup"
+    << "h1"
+    << "h2"
+    << "h3"
+    << "h4"
+    << "h5"
+    << "h6"
+    << "label"
+    << "a"
+    << "b"
+    << "blockquote"
+    << "br"
+    << "cite"
+    << "code"
+    << "i"
+    << "li"
+    << "ol"
+    << "p"
+    << "pre"
+    << "strong"
+    << "sub"
+    << "sup"
+    << "table"
+    << "th"
+    << "tbody"
+    << "tr"
+    << "td"
+    ;
+
+static bool isGoodTag(QString tag) {
+    return good_tags_.contains(tag);
+}
+
+static bool isAttrGood(QString tag, QString attr,
+                       QString& value) {
+    return false;
+}
+
 void examineElement(QWebElement element,
                     const TagCheck& tag_good,
                     const AttrCheck& attr_check) {
@@ -66,55 +115,6 @@ QString filterHtml(QWebElement element,
     html = removeHtmlComments(html);
     html = closeTags(html);
     return html;
-}
-
-typedef QSet<QString> TagSet;
-
-TagSet good_tags_ = TagSet()
-    << "html"
-    << "body"
-    << "div"
-    << "span"
-    << "form"
-    << "input"
-    << "select"
-    << "option"
-    << "optgroup"
-    << "h1"
-    << "h2"
-    << "h3"
-    << "h4"
-    << "h5"
-    << "h6"
-    << "label"
-    << "a"
-    << "b"
-    << "blockquote"
-    << "br"
-    << "cite"
-    << "code"
-    << "i"
-    << "li"
-    << "ol"
-    << "p"
-    << "pre"
-    << "strong"
-    << "sub"
-    << "sup"
-    << "table"
-    << "th"
-    << "tbody"
-    << "tr"
-    << "td"
-    ;
-
-static bool isGoodTag(QString tag) {
-    return good_tags_.contains(tag);
-}
-
-static bool isAttrGood(QString tag, QString attr,
-                       QString& value) {
-    return false;
 }
 
 QString safeHtml(QWebElement element) {
