@@ -44,6 +44,7 @@ void Page::realRenderPng() {
                  QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&image);
     mainFrame()->render(&painter);
+    painter.end();
     QBuffer buffer(&ba);
     buffer.open(QIODevice::WriteOnly);
     image.save(&buffer, "PNG");
