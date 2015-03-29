@@ -52,8 +52,17 @@ TagSet self_closing_tags_ = TagSet()
     << "br"
     ;
 
+TagSet input_tags_ = TagSet()
+    << "input"
+    << "select"
+    ;
+
 static bool isGoodTag(QString tag) {
     return good_tags_.contains(tag);
+}
+
+static bool isInputTag(QString tag) {
+    return input_tags_.contains(tag);
 }
 
 static bool isAttrGood(QString tag, QString attr,
@@ -67,6 +76,9 @@ static bool isAttrGood(QString tag, QString attr,
     if (tag == "input" && attr == "class") {
         return true;
     }
+    if (tag == "input" && attr == "value") {
+        return true;
+    }
     return false;
 }
 
@@ -78,8 +90,17 @@ void examineElement(QWebElement element,
         element.removeFromDocument();
         return;
     }
-    BOOST_FOREACH (QString attr, element.attributeNames()) {
+    QStringList attrs = element.attributeNames();
+    if (isInputTag(tag) && !attrs.contains("value")) {
+        attrs << "value";
+    }
+    BOOST_FOREACH (QString attr, attrs) {
         QString value = element.attribute(attr);
+        if (isInputTag(tag) && attr == "value") {
+            // http://stackoverflow.com/a/3704424
+            value = element.evaluateJavaScript("this.value")
+                .toString();
+        }
         attr = attr.toLower();
         if (attr_check(tag, attr, value)) {
             element.setAttribute(attr, value);
@@ -130,7 +151,7 @@ static void buildMap(Class2Element& class2element,
     QString tag_body = body.tagName().toLower();
     QString tag_copy = copy.tagName().toLower();
     if (tag_body == tag_copy) {
-        if (tag_body == "input" || tag_body == "select") {
+        if (isInputTag(tag_body)) {
             int r = qrand();
             QString clas = "qtinwt" + QString::number(r);
             copy.addClass(clas);
