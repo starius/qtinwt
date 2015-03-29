@@ -146,6 +146,7 @@ void App::setInterval() {
 }
 
 void App::navigate() {
+    setHtmlMode(false);
     QString url = toQString(address_->text());
     if (!url.contains("://")) {
         url = "http://" + url;
