@@ -315,6 +315,7 @@ void App::setHtmlMode(bool html) {
     } else {
         mode_button_->setText("HTML");
         stacked_->setCurrentWidget(image_);
+        requestRendering();
     }
     html_mode_ = html;
 }
