@@ -45,6 +45,11 @@ TagSet good_tags_ = TagSet()
     << "td"
     ;
 
+TagSet self_closing_tags_ = TagSet()
+    << "input"
+    << "br"
+    ;
+
 static bool isGoodTag(QString tag) {
     return good_tags_.contains(tag);
 }
@@ -100,7 +105,12 @@ static QString removeHtmlComments(QString html) {
 
 static QString closeTags(QString html) {
     // TODO make toOuterXml return valid XML
-    html = html.replace("<br>", "<br/>", Qt::CaseInsensitive);
+    foreach (QString tag, self_closing_tags_) {
+        QRegExp pattern("<" + tag + "([^>]*)>",
+                        Qt::CaseInsensitive);
+        QString replacement("<" + tag +"\\1/>");
+        html = html.replace(pattern, replacement);
+    }
     return html;
 }
 
