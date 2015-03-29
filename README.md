@@ -1,5 +1,8 @@
 # QtWebKit wrapped in Wt application with PNG web snapshots
 
+[![Build Status](https://travis-ci.org/starius/qtinwt.png?branch=master)](https://travis-ci.org/starius/qtinwt)
+[![License](http://img.shields.io/badge/License-GPL2-brightgreen.png)](LICENSE)
+
 Build and install (Debian):
 
 ```bash
