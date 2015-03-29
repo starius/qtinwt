@@ -6,8 +6,8 @@
 Build and install (Debian):
 
 ```bash
-$ sudo apt-get install make cmake cmake-curses-gui g++ libwt-dev \
-    libqt4-dev libqtwebkit-dev xvfb
+$ sudo apt-get install make cmake cmake-curses-gui g++ \
+    libwt-dev libwthttp-dev libqt4-dev libqtwebkit-dev xvfb
 $ cmake .
 $ make
 $ ./run.sh
