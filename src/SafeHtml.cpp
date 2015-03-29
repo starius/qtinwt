@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include "SafeHtml.hpp"
 
 void examineElement(QWebElement element,
@@ -114,4 +119,3 @@ static bool isAttrGood(QString tag, QString attr,
 QString safeHtml(QWebElement element) {
     return filterHtml(element, isGoodTag, isAttrGood);
 }
-

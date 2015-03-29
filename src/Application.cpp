@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include <boost/bind.hpp>
 #include <boost/lexical_cast.hpp>
 #include <Wt/WEnvironment>
@@ -320,4 +325,3 @@ void App::changeMode() {
 void App::requestHtml() {
     emit PAGES->htmlPage(sessionId_);
 }
-

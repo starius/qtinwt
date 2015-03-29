@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include <Wt/WServer>
 
 #include "Application.hpp"
@@ -60,4 +65,3 @@ void Page::onTitleChanged(QString title) {
 void Page::onUrlChanged(QUrl url) {
     post(boost::bind(&App::urlChanged, url));
 }
-

@@ -1,3 +1,7 @@
+# qtinwt, QtWebKit wrapped in Wt application
+# Copyright (C) 2014-2015 Boris Nagaev
+# See the LICENSE file for terms of use
+
 # Prerequisites: http://mxe.cc/#requirements
 
 git clone -b stable https://github.com/mxe/mxe.git
@@ -17,4 +21,3 @@ moc_exe=../mxe/usr/i686-pc-mingw32/bin/moc
 cmake -DCMAKE_TOOLCHAIN_FILE=$toolchain \
       -DQT_MOC_EXECUTABLE=$moc_exe ~/qtinwt/
 make
-

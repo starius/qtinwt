@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include <Wt/Http/Response>
 
 #include "Application.hpp"
@@ -37,4 +42,3 @@ QByteArray Resource::image() const {
 void Resource::setImage(QByteArray image) {
     image_ = image;
 }
-

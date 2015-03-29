@@ -1,3 +1,7 @@
+# qtinwt, QtWebKit wrapped in Wt application
+# Copyright (C) 2014-2015 Boris Nagaev
+# See the LICENSE file for terms of use
+
 find_package(Threads REQUIRED)
 
 include(CheckCXXSourceCompiles)
@@ -69,4 +73,3 @@ IF (MINGW)
     ENDIF (LCMS2_FOUND)
     SET(CMAKE_EXE_LINKER_FLAGS -mwindows)
 ENDIF (MINGW)
-

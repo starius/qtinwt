@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include <Wt/WApplication>
 
 #include "util.hpp"
@@ -13,4 +18,3 @@ WString toWString(const QString& s) {
 QString toQString(const WString& s) {
     return QString::fromUtf8(s.toUTF8().c_str());
 }
-

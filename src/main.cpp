@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #include "boost-xtime.hpp"
 #include <boost/thread.hpp>
 
@@ -33,4 +38,3 @@ int main(int argc, char* argv[]) {
     boost::thread wt_thread(&WRun, argc, argv, &createApp);
     return a.exec();
 }
-

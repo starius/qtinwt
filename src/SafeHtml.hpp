@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #ifndef QIW_SAFE_HTML_HPP_
 #define QIW_SAFE_HTML_HPP_
 
@@ -15,4 +20,3 @@ QString filterHtml(QWebElement element,
 QString safeHtml(QWebElement element);
 
 #endif
-

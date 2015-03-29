@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #ifndef QIW_PAGES_HPP_
 #define QIW_PAGES_HPP_
 
@@ -60,4 +65,3 @@ private:
 };
 
 #endif
-

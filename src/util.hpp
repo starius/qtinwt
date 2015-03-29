@@ -1,3 +1,8 @@
+/* qtinwt, QtWebKit wrapped in Wt application
+ * Copyright (C) 2014-2015 Boris Nagaev
+ * See the LICENSE file for terms of use
+ */
+
 #ifndef QIW_UTIL_HPP_
 #define QIW_UTIL_HPP_
 
@@ -16,4 +21,3 @@ WString toWString(const QString& s);
 QString toQString(const WString& s);
 
 #endif
-
