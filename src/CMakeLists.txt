@@ -9,10 +9,7 @@ IF (MINGW)
 ELSE (MINGW)
     SET(B_THREAD "thread")
 ENDIF (MINGW)
-FIND_PACKAGE(Boost 1.42
-    COMPONENTS ${B_THREAD} program_options filesystem system
-        date_time signals regex random
-    REQUIRED)
+FIND_PACKAGE(Boost 1.42 COMPONENTS ${B_THREAD} signals REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR})
