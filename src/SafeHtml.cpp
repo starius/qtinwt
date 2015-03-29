@@ -56,6 +56,12 @@ static bool isGoodTag(QString tag) {
 
 static bool isAttrGood(QString tag, QString attr,
                        QString& value) {
+    if (tag == "input" && attr == "type") {
+        if (value == "image" || value == "submit") {
+            return false;
+        }
+        return true;
+    }
     return false;
 }
 
