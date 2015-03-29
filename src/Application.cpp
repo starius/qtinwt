@@ -49,7 +49,7 @@ void App::initialize() {
     emit PAGES->loadInPage(sessionId_, QUrl("http://mail.ru/"));
     resource_ = new Resource;
     image_ = new Image;
-    image_->setImageLink(resource_);
+    image_->setResource(resource_);
     image_->mouseWentDown().connect(this, &App::mouseDown);
     image_->mouseWentUp().connect(this, &App::mouseUp);
     image_->mouseWheel().connect(this, &App::mouseWheel);
