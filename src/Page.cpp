@@ -68,7 +68,8 @@ void Page::onUpdateInputs(QString values_json) {
     try
     {
         std::stringstream ss;
-        ss << values_json.toStdString();
+        QByteArray utf8 = values_json.toUtf8();
+        ss.write(utf8.constData(), utf8.size());
         namespace Pt = boost::property_tree;
         Pt::ptree pt;
         Pt::read_json(ss, pt);
