@@ -51,7 +51,7 @@ void App::initialize() {
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
     emit PAGES->createPage(sessionId_);
-    emit PAGES->loadInPage(sessionId_, QUrl("http://mail.ru/"));
+    emit PAGES->loadInPage(sessionId_, QUrl("https://startpage.com/"));
     resource_ = new Resource;
     image_ = new Image;
     image_->setResource(resource_);
