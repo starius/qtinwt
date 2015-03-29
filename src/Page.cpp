@@ -40,7 +40,8 @@ void Page::renderPng() {
 void Page::realRenderPng() {
     renderingPending_ = false;
     QByteArray ba;
-    QImage image(viewportSize(), QImage::Format_ARGB32);
+    QImage image(viewportSize(),
+                 QImage::Format_ARGB32_Premultiplied);
     QPainter painter(&image);
     mainFrame()->render(&painter);
     QBuffer buffer(&ba);
