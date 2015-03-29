@@ -1,8 +1,3 @@
-syntax: glob
-
-.hgignore
-.gitignore
-
 *.swp
 *.autosave
 
@@ -31,4 +26,3 @@ CTestTestfile.cmake
 cmake_install.cmake
 install_manifest.txt
 CTestCostData.txt
-
