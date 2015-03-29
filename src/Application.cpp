@@ -308,6 +308,9 @@ void App::keyPressed(const WKeyEvent& e) {
 }
 
 void App::setHtmlMode(bool html) {
+    if (html == html_mode_) {
+        return;
+    }
     if (html) {
         mode_button_->setText("IMG");
         stacked_->setCurrentWidget(html_scroll_);
