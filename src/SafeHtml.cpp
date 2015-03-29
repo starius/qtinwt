@@ -79,6 +79,7 @@ TagSet good_tags_ = TagSet()
     << "input"
     << "select"
     << "option"
+    << "optgroup"
     << "h1"
     << "h2"
     << "h3"
