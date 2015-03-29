@@ -4,6 +4,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install make cmake cmake-curses-gui g++ libwt-dev libqt4-dev libqtwebkit-dev xvfb
 
-install:
+script:
   - cmake .
   - make
