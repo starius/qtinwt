@@ -3,6 +3,8 @@
  * See the LICENSE file for terms of use
  */
 
+#include <boost/foreach.hpp>
+
 #include "SafeHtml.hpp"
 
 typedef QSet<QString> TagSet;
@@ -62,6 +64,9 @@ static bool isAttrGood(QString tag, QString attr,
         }
         return true;
     }
+    if (tag == "input" && attr == "class") {
+        return true;
+    }
     return false;
 }
 
@@ -73,7 +78,7 @@ void examineElement(QWebElement element,
         element.removeFromDocument();
         return;
     }
-    foreach (QString attr, element.attributeNames()) {
+    BOOST_FOREACH (QString attr, element.attributeNames()) {
         QString value = element.attribute(attr);
         attr = attr.toLower();
         if (attr_check(tag, attr, value)) {
@@ -111,7 +116,7 @@ static QString removeHtmlComments(QString html) {
 
 static QString closeTags(QString html) {
     // TODO make toOuterXml return valid XML
-    foreach (QString tag, self_closing_tags_) {
+    BOOST_FOREACH (QString tag, self_closing_tags_) {
         QRegExp pattern("<" + tag + "([^>]*)>",
                         Qt::CaseInsensitive);
         QString replacement("<" + tag +"\\1/>");
@@ -120,11 +125,34 @@ static QString closeTags(QString html) {
     return html;
 }
 
+static void buildMap(Class2Element& class2element,
+                     QWebElement body, QWebElement copy) {
+    QString tag_body = body.tagName().toLower();
+    QString tag_copy = copy.tagName().toLower();
+    if (tag_body == tag_copy) {
+        if (tag_body == "input" || tag_body == "select") {
+            int r = qrand();
+            QString clas = "qtinwt" + QString::number(r);
+            copy.addClass(clas);
+            class2element[clas] = body;
+        }
+        QWebElement b = body.firstChild();
+        QWebElement c = copy.firstChild();
+        while (!b.isNull() && !c.isNull()) {
+            buildMap(class2element, b, c);
+            b = b.nextSibling();
+            c = c.nextSibling();
+        }
+    }
+}
+
 QString filterHtml(QWebElement element,
                    const TagCheck& tag_good,
-                   const AttrCheck& attr_check) {
+                   const AttrCheck& attr_check,
+                   Class2Element& class2element) {
     QWebElement body = element.findFirst("body");
     QWebElement copy = body.clone();
+    buildMap(class2element, body, copy);
     examineElement(copy, tag_good, attr_check);
     QString html = copy.toInnerXml();
     html = html.simplified();
@@ -133,6 +161,21 @@ QString filterHtml(QWebElement element,
     return html;
 }
 
-QString safeHtml(QWebElement element) {
-    return filterHtml(element, isGoodTag, isAttrGood);
+QString safeHtml(QWebElement element,
+                 Class2Element& class2element) {
+    return filterHtml(element, isGoodTag, isAttrGood,
+                      class2element);
+}
+
+void updateInputs(Class2Element& class2element,
+                  const Class2Value& new_values) {
+    BOOST_FOREACH (Class2Element::value_type& cl_and_el,
+                   class2element) {
+        QString clas = cl_and_el.first;
+        QWebElement element = cl_and_el.second;
+        Class2Value::const_iterator it = new_values.find(clas);
+        if (it != new_values.end()) {
+            element.setAttribute("value", it->second);
+        }
+    }
 }

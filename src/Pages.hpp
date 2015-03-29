@@ -30,6 +30,7 @@ signals:
     void goBack(QString key);
     void renderPage(QString key);
     void htmlPage(QString key);
+    void updateInputs(QString key, QString values_json);
     void setSize(QString key, QSize size);
     void mouse(QString key, QEvent::Type, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);
@@ -45,6 +46,7 @@ public slots:
     void onGoBack(QString key);
     void onRenderPage(QString key);
     void onHtmlPage(QString key);
+    void onUpdateInputs(QString key, QString values_json);
     void onSetSize(QString key, QSize size);
     void onMouse(QString key, QEvent::Type, QPoint,
         Qt::MouseButton, Qt::KeyboardModifiers);

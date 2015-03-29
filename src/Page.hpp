@@ -9,6 +9,8 @@
 #include <boost/function.hpp>
 #include <QtWebKit>
 
+#include "SafeHtml.hpp"
+
 class Page : public QWebPage {
     Q_OBJECT;
 public:
@@ -26,8 +28,10 @@ public slots:
     void onUrlChanged(QUrl url);
     void realRenderPng();
     void onHtmlPage();
+    void onUpdateInputs(QString values_json);
 
 private:
+    Class2Element class2element_;
     std::string sessionId_;
     bool renderingPending_;
 };

@@ -3,6 +3,10 @@
  * See the LICENSE file for terms of use
  */
 
+#include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 #include <Wt/WServer>
 
 #include "Application.hpp"
@@ -52,8 +56,33 @@ void Page::realRenderPng() {
 }
 
 void Page::onHtmlPage() {
-    QWebElement d = mainFrame()->documentElement();
-    post(boost::bind(&App::htmlChanged, safeHtml(d)));
+    QWebElement document = mainFrame()->documentElement();
+    class2element_.clear();
+    QString html = safeHtml(document, class2element_);
+    post(boost::bind(&App::htmlChanged, html));
+}
+
+// get changed values as json {class: value}
+void Page::onUpdateInputs(QString values_json) {
+    Class2Value new_values;
+    try
+    {
+        std::stringstream ss;
+        ss << values_json.toStdString();
+        namespace Pt = boost::property_tree;
+        Pt::ptree pt;
+        Pt::read_json(ss, pt);
+        BOOST_FOREACH(const Pt::ptree::value_type& v, pt) {
+            QString clas = QString::fromUtf8(v.first.c_str());
+            std::string val = v.second.data();
+            QString value = QString::fromUtf8(val.c_str());
+            new_values[clas] = value;
+        }
+    } catch (std::exception const& e) {
+        qDebug() << e.what();
+    }
+    updateInputs(class2element_, new_values);
+    class2element_.clear();
 }
 
 void Page::loadInMainFrame(QUrl url) {

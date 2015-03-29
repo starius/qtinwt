@@ -46,9 +46,11 @@ public:
 private:
     QString sessionId_;
     JSignal<> timed_;
+    JSignal<WString> inputs_updated_;
     Resource* resource_;
     WStackedWidget* stacked_;
-    WPushButton* mode_button_;
+    WPushButton* to_html_button_;
+    WPushButton* to_img_button_;
     WLineEdit* address_;
     WLineEdit* input_;
     Image* image_;
@@ -66,6 +68,7 @@ private:
     void keyUp(const WKeyEvent& e);
     void keyPressed(const WKeyEvent& e);
     void requestRenderingImpl();
+    void updateInputs(const WString& values_json);
     void onTimeout();
     void setInterval();
 };

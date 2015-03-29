@@ -26,6 +26,8 @@ Pages::Pages() {
             this, SLOT(onRenderPage(QString)));
     connect(this, SIGNAL(htmlPage(QString)),
             this, SLOT(onHtmlPage(QString)));
+    connect(this, SIGNAL(updateInputs(QString, QString)),
+            this, SLOT(onUpdateInputs(QString, QString)));
     connect(this, SIGNAL(setSize(QString, QSize)),
             this, SLOT(onSetSize(QString, QSize)));
     connect(this, SIGNAL(mouse(QString, QEvent::Type, QPoint,
@@ -92,6 +94,13 @@ void Pages::onHtmlPage(QString key) {
     Page* page = pageOf(key);
     if (page) {
         page->onHtmlPage();
+    }
+}
+
+void Pages::onUpdateInputs(QString key, QString values_json) {
+    Page* page = pageOf(key);
+    if (page) {
+        page->onUpdateInputs(values_json);
     }
 }
 

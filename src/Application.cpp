@@ -25,11 +25,40 @@
 using namespace Wt;
 
 #define TO_S boost::lexical_cast<std::string>
+#define WT_JS(...) #__VA_ARGS__
+
+const char* UPDATE_INPUTS_JS = WT_JS(
+function() {
+    var new_values = {};
+    $("input, select").each(function(index, input) {
+        if (input && input.getAttribute) {
+            var qtinwt_class;
+            var class_list = input.getAttribute('class');
+            if (class_list) {
+                class_list = class_list.split(' ');
+                $.each(class_list, function(index, clas) {
+                    if (clas.lastIndexOf("qtinwt", 0) === 0) {
+                        qtinwt_class = clas;
+                    }
+                });
+                if (qtinwt_class) {
+                    var value = $(input).attr('value');
+                    if (value) {
+                        new_values[qtinwt_class] = value;
+                    }
+                }
+            }
+        }
+    });
+    var json = JSON.stringify(new_values);
+    @CALL@;
+});
 
 App::App(const WEnvironment& env):
     WApplication(env),
     sessionId_(QString::fromUtf8(sessionId().c_str())),
     timed_(this, "timed"),
+    inputs_updated_(this, "inputs_updated"),
     resource_(0), html_mode_(false) {
 }
 
@@ -45,8 +74,16 @@ void App::initialize() {
     html_scroll_->setWidget(html_);
     WPushButton* back = new WPushButton(" < ");
     back->clicked().connect(this, &App::goBack);
-    mode_button_ = new WPushButton;
-    mode_button_->clicked().connect(this, &App::changeMode);
+    to_html_button_ = new WPushButton("HTML");
+    to_html_button_->clicked().connect(
+            boost::bind(&App::setHtmlMode, this, true));
+    to_img_button_ = new WPushButton("IMG");
+    to_img_button_->hide();
+    inputs_updated_.connect(this, &App::updateInputs);
+    QString js = QString::fromUtf8(UPDATE_INPUTS_JS);
+    std::string call = inputs_updated_.createCall("json");
+    js = js.replace("@CALL@", QString::fromUtf8(call.c_str()));
+    to_img_button_->clicked().connect(js.toStdString());
     address_= new WLineEdit;
     input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
@@ -68,8 +105,10 @@ void App::initialize() {
     top_layout->setContentsMargins(0, 0, 0, 0);
     top_layout->addWidget(back);
     back->setMinimumSize(60, 20);
-    mode_button_->setMinimumSize(60, 20);
-    top_layout->addWidget(mode_button_);
+    to_html_button_->setMinimumSize(60, 20);
+    to_img_button_->setMinimumSize(60, 20);
+    top_layout->addWidget(to_html_button_);
+    top_layout->addWidget(to_img_button_);
     top_layout->addWidget(address_, 1);
     layout->addLayout(top_layout);
     layout->addWidget(stacked_, 1);
@@ -312,11 +351,13 @@ void App::setHtmlMode(bool html) {
         return;
     }
     if (html) {
-        mode_button_->setText("IMG");
+        to_img_button_->show();
+        to_html_button_->hide();
         stacked_->setCurrentWidget(html_scroll_);
         requestHtml();
     } else {
-        mode_button_->setText("HTML");
+        to_img_button_->hide();
+        to_html_button_->show();
         stacked_->setCurrentWidget(image_);
         requestRendering();
     }
@@ -329,4 +370,10 @@ void App::changeMode() {
 
 void App::requestHtml() {
     emit PAGES->htmlPage(sessionId_);
+}
+
+void App::updateInputs(const WString& values_json) {
+    emit PAGES->updateInputs(sessionId_,
+            toQString(values_json));
+    setHtmlMode(false);
 }
