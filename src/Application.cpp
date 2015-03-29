@@ -85,7 +85,6 @@ void App::initialize() {
     js = js.replace("@CALL@", QString::fromUtf8(call.c_str()));
     to_img_button_->clicked().connect(js.toStdString());
     address_= new WLineEdit;
-    input_= new WLineEdit;
     address_->enterPressed().connect(this, &App::navigate);
     emit PAGES->createPage(sessionId_);
     emit PAGES->loadInPage(sessionId_, QUrl("https://startpage.com/"));
@@ -95,7 +94,6 @@ void App::initialize() {
     image_->mouseWentDown().connect(this, &App::mouseDown);
     image_->mouseWentUp().connect(this, &App::mouseUp);
     image_->mouseWheel().connect(this, &App::mouseWheel);
-    input_->keyPressed().connect(this, &App::keyPressed);
     globalKeyWentDown().connect(this, &App::keyDown);
     globalKeyWentUp().connect(this, &App::keyUp);
     WVBoxLayout* layout = new WVBoxLayout;
@@ -112,7 +110,6 @@ void App::initialize() {
     top_layout->addWidget(address_, 1);
     layout->addLayout(top_layout);
     layout->addWidget(stacked_, 1);
-    layout->addWidget(input_);
     stacked_->addWidget(image_);
     stacked_->addWidget(html_scroll_);
     timeout_ = REFRESH_MSEC;

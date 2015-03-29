@@ -52,7 +52,6 @@ private:
     WPushButton* to_html_button_;
     WPushButton* to_img_button_;
     WLineEdit* address_;
-    WLineEdit* input_;
     Image* image_;
     WScrollArea* html_scroll_;
     WText* html_;
